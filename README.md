@@ -1,4 +1,9 @@
-## DJI产品流行度分析
+# DJI产品流行度分析
+
+## 依赖关系
+```
+    sudo pip3 install lxml
+```
  
 ## 目标
  
