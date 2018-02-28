@@ -5,6 +5,7 @@ from lxml import etree
 
 from module2 import djiDevicePopularity
 from module2 import linkList
+import common
 
 # device other name dict
 # dict["stdName"] = nick name list
@@ -21,15 +22,24 @@ def getHtml(url):
 
     # analyse html title
     elements = page.xpath(u'''/html/head/title''')
-    print(elements[0].text)
-    print(elements[0].text.find("精灵"))
-    print(elements[0].text.find("phantom"))
 
-# print(dji_device_popularity)
-# print(link_list)
+    # all string need to search
+    allStr = elements[0].text
+
+    deviceNames = common.getDeviceName()
+    for deviceName, nicknameList in deviceNames.items():
+        if allStr.find(deviceName) != -1
+            djiDevicePopularity[deviceName] += 1
+            return      # analyse over, but really?
+        for nickname in nicknameList:
+            if allStr.find(nickname) != -1
+                djiDevicePopularity[deviceName] += 1
+                return
+
+    # print(elements[0].text)
 
 def main():
-    for url in link_list:
+    for url in linkList:
         getHtml(url)
         print("get " + url + " OK!!!")
 
