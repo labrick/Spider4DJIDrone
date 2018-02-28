@@ -14,9 +14,9 @@
 
 ## 分工
 
-YANAN: 步骤2/4
+YANAN: 步骤3
 
-FUAN：步骤3
+FUAN：步骤2/4
 
 YINBIAO：步骤1
 
