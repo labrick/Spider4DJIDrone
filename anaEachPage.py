@@ -3,8 +3,8 @@
 import http.client as httplib
 from lxml import etree
 
-from module2 import dji_device_popularity
-from module2 import link_list
+from module2 import djiDevicePopularity
+from module2 import linkList
 
 # device other name dict
 # dict["stdName"] = nick name list
