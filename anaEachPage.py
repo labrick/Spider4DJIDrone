@@ -28,11 +28,11 @@ def getHtml(url):
 
     deviceNames = common.getDeviceName()
     for deviceName, nicknameList in deviceNames.items():
-        if allStr.find(deviceName) != -1
+        if allStr.find(deviceName) != -1:
             djiDevicePopularity[deviceName] += 1
             return      # analyse over, but really?
         for nickname in nicknameList:
-            if allStr.find(nickname) != -1
+            if allStr.find(nickname) != -1:
                 djiDevicePopularity[deviceName] += 1
                 return
 
