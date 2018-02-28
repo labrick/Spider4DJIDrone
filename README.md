@@ -8,10 +8,10 @@
  
 1. 爬取[链接:https://bbs.dji.com/forum-60-1.html](https://bbs.dji.com/forum-60-1.html)，获取帖子链接列表和帖子对应发帖人所用设备（没有则为空），并统计DJI产品设备名。
 ```
-接口变量：
-link_list: 链接列表
-link2device_list: 每个链接对应的设备
-dji_device: DJI存在的设备列表
+    接口变量：
+    link_list: 链接列表
+    link2device_list: 每个链接对应的设备
+    dji_device: DJI存在的设备列表
 ```
 2. 判断发帖人设备是否存在，如果存在，该设备流行度加一；如果不存在，保存该链接；
 ```
@@ -19,7 +19,7 @@ dji_device: DJI存在的设备列表
 dji_device_popularity: DJI设备对应的流行度值
 link_list: 不好判断的链接列表
 ```
-3. 爬去步骤二中的链接，检测整个页面是否出现步骤一中的设备名称，如果存在，该设备流行度加一，否则跳过该链接
+3. 爬取步骤二中的链接，检测整个页面是否出现步骤一中的设备名称，如果存在，该设备流行度加一，否则跳过该链接
 ```
 接口变量：
 dji_device_popularity: DJI设备对应的流行度值（包含不好判断的链接）
