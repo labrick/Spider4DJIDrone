@@ -1,14 +1,30 @@
 #!/usr/bin/python3
 
-djiDevice = ["mavic pro", "spark"]
-djiDevicePopularity = {}
+#variable passed by the first step
+djiDevice = ["mavic pro", "spark", "mavic air"]
 linkList = [
         "https://bbs.dji.com/thread-6833-1-1.html",
+        "https://bbs.dji.com/thread-6833-1-1.html",
+        "https://bbs.dji.com/thread-2832-1-1.html",
+        "https://bbs.dji.com/thread-2832-1-1.html",
         "https://bbs.dji.com/thread-2832-1-1.html",
     ]
+link2DeviceList = ["mavic pro", "mavic air", "","spark", "spark"]
 
+#variable to be passed to next step
+linkListUnident =[]
+
+#reset 
+djiDevicePopularity = {}
 for element in djiDevice:
     djiDevicePopularity[element] = 0;
 
-# print(djiDevice)
-# print(djiDevicePopularity)
+#calculate the popularity for now
+for index in range(len(link2DeviceList)):
+    if link2DeviceList[index] == "":
+        linkListUnident.append(linkList[index])
+    else:
+        djiDevicePopularity[link2DeviceList[index]] += 1;
+
+print(linkListUnident)
+print(djiDevicePopularity)
