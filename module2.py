@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 #variable passed by the first step
-djiDevice = ["mavic pro", "spark", "mavic air"]
 linkList = [
         "https://bbs.dji.com/thread-6833-1-1.html",
         "https://bbs.dji.com/thread-6833-1-1.html",
@@ -13,6 +12,10 @@ link2DeviceList = ["mavic pro", "mavic air", "","spark", "spark"]
 
 #variable to be passed to next step
 linkListUnident =[]
+
+#get djiDevice
+djiDevice = list(set(link2DeviceList))
+djiDevice.remove("")
 
 #reset 
 djiDevicePopularity = {}
@@ -28,3 +31,4 @@ for index in range(len(link2DeviceList)):
 
 print(linkListUnident)
 print(djiDevicePopularity)
+print(djiDevice)
