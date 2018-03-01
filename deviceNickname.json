@@ -1,4 +1,11 @@
 {
-    "spark": ["晓", "晓spark"],
-    "mavic pro": ["mavic"]
+    "spark": [
+        "晓",
+        "晓spark"
+    ],
+    "精灵": [],
+    "mavic pro": [
+        "mavic"
+    ],
+    "mavic air": []
 }
