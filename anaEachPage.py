@@ -2,6 +2,7 @@
 
 import http.client as httplib
 from lxml import etree
+from bs4 import BeautifulSoup
 
 from module2 import djiDevicePopularity
 from module2 import linkList
@@ -18,21 +19,29 @@ def getHtml(url):
     response = conn.getresponse()
     html = response.read()
     # print(html)
-    page = etree.HTML(html.lower().decode('utf-8'))
+    # page = etree.HTML(html.lower().decode('utf-8'))
 
     # analyse html title
-    elements = page.xpath(u'''/html/head/title''')
+    # elements = page.xpath(u'''/html/head/title''')
 
     # all string need to search
-    allStr = elements[0].text
+    soup = BeautifulSoup(html, "html.parser")
+    # print(soup.prettify())
+    # print(soup.select("head > title")) = soup.title.text
+    # print(soup.select("#postlist > div:nth-of-type(1) > table"))
+
+    allStr = str(soup.select("#postlist > div:nth-of-type(1) > table")[0])
+    print(allStr)
 
     deviceNames = common.getDeviceName()
     for deviceName, nicknameList in deviceNames.items():
         if allStr.find(deviceName) != -1:
             djiDevicePopularity[deviceName] += 1
+            print("find " + deviceName)
             return      # analyse over, but really?
         for nickname in nicknameList:
             if allStr.find(nickname) != -1:
+                print("find " + nickname)
                 djiDevicePopularity[deviceName] += 1
                 return
 
