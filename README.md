@@ -3,6 +3,7 @@
 ## 依赖关系
 
     sudo pip3 install lxml
+    sudo pip3 install matplotlib
  
 ## 目标
  
