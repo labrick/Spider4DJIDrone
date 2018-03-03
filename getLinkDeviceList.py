@@ -21,6 +21,7 @@ def getLinkDeviceList(baseUrl):
     for index in range(len(link2DeviceList)):
         link2DeviceList[index] = link2DeviceList[index].replace("发表于", '')
         link2DeviceList[index] = link2DeviceList[index].replace("用户", '')
+        link2DeviceList[index] = link2DeviceList[index].rstrip()
 
     return linkList, link2DeviceList
 
