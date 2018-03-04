@@ -4,10 +4,13 @@
 
     sudo pip3 install lxml
     sudo pip3 install matplotlib
+    sudo apt-get install python3-tk
  
 ## 目标
  
-编写一个爬虫，解析大疆社区中的作品展示，获得各产品流行度值，并通过图表直观给出各产品受欢迎程度
+1. 编写一个爬虫，解析大疆社区中的作品展示，获得各产品流行度值，并通过图表直观给出各产品受欢迎程度
+
+2. 不要让用你代码的人想修改你的代码！！
  
 ## 解决方案
  
