@@ -4,16 +4,12 @@ import http.client as httplib
 from lxml import etree
 from bs4 import BeautifulSoup
 
-from module2 import djiDevicePopularity
-from module2 import linkList
+from module2 import getLinkPopularity
+# from module2 import linkList
 import common
 
-# device other name dict
-# dict["stdName"] = nick name list
-deviceNickname = {}
-
 # get data from html
-def getHtml(url):
+def getHtmlContext(url):
     conn = httplib.HTTPConnection("bbs.dji.com")
     conn.request(method="GET", url = url)
     response = conn.getresponse()
@@ -30,9 +26,11 @@ def getHtml(url):
     # print(soup.select("head > title")) = soup.title.text
     # print(soup.select("#postlist > div:nth-of-type(1) > table"))
 
-    allStr = str(soup.select("#postlist > div:nth-of-type(1) > table")[0])
-    print(allStr)
+    allStr = str(soup.select("#postlist > div:nth-of-type(1) > table > tr:nth-of-type(1)")[0])
+    # print(allStr)
+    return allStr
 
+def modifyPopularity(allStr, djiDevicePopularity):
     deviceNames = common.getDeviceName()
     for deviceName, nicknameList in deviceNames.items():
         if allStr.find(deviceName) != -1:
@@ -44,13 +42,30 @@ def getHtml(url):
                 print("find " + nickname)
                 djiDevicePopularity[deviceName] += 1
                 return
+    print("find nothing")
 
     # print(elements[0].text)
 
-def main():
+def getPopularity():
+    linkList, djiDevicePopularity = getLinkPopularity()
     for url in linkList:
-        getHtml(url)
+        allStr = getHtmlContext(url)
+        # print(allStr)
         print("get " + url + " OK!!!")
+        modifyPopularity(allStr, djiDevicePopularity)
+    return djiDevicePopularity
+
+
+def main():
+    linkList, djiDevicePopularity = getLinkPopularity()
+    for url in linkList:
+        allStr = getHtmlContext(url)
+        # print(allStr)
+        print("get " + url + " OK!!!")
+        modifyPopularity(allStr, djiDevicePopularity)
+
+    for djiDeviceKey, popularityValue in djiDevicePopularity.items():
+        print("%12s:\t%d" % (djiDeviceKey, popularityValue))
 
 if __name__ == '__main__':
     main()
