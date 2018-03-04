@@ -41,6 +41,13 @@
 4. 将步骤2/3中统计的流行度值归一化并制成图表，发到电子邮箱中; 
 5. 形成文档
 
+## 运行结果
+
+分析一页
+![](./image/result_1page.png,"onepage")
+分析五页
+![](./image/result_5page.png,"fivepage")
+
 ## 分工
  
 YANAN: 步骤3 
