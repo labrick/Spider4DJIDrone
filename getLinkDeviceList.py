@@ -48,7 +48,7 @@ def getLinkDeviceList(minPageNum, maxPageNum):
 def getLinkDevice():
     baseUrl = 'https://bbs.dji.com/forum-60-1.html'    # DJI社区
     minPageNum = 1
-    maxPageNum = 2 # getMaxPageNum(baseUrl)
+    maxPageNum = getMaxPageNum(baseUrl)
     return getLinkDeviceList(minPageNum, maxPageNum)
 
 def main():
