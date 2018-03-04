@@ -44,9 +44,12 @@
 ## 运行结果
 
 分析一页
-![](./image/result_1page.png,"onepage")
+
+![one](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_1page.png,"onepage")
+
 分析五页
-![](./image/result_5page.png,"fivepage")
+
+![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_5page.png,"fivepage")
 
 ## 分工
  
