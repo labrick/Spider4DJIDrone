@@ -23,7 +23,7 @@ def getMaxPageNum(html):
     #print(maxNum)
     return maxNum
 
-def getLinkDeviceList(baseUrl, minPageNum, maxPageNum):
+def getLinkDeviceList(minPageNum, maxPageNum):
     pageNum = minPageNum
     while pageNum <= maxPageNum:
         pageUrl = POST_URL + 'forum-60-' + str(pageNum) + '.html'
@@ -48,7 +48,7 @@ def main():
     baseUrl = 'https://bbs.dji.com/forum-60-1.html'    # DJI社区
     minPageNum = 1
     maxPageNum = getMaxPageNum(baseUrl)
-    linkList, link2DeviceList = getLinkDeviceList(baseUrl, minPageNum, maxPageNum)
+    linkList, link2DeviceList = getLinkDeviceList(minPageNum, maxPageNum)
 
     for each in linkList:
        print(each)
