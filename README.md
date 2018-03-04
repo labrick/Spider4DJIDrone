@@ -4,6 +4,7 @@
 
     sudo pip3 install lxml
     sudo pip3 install matplotlib
+    sudo apt-get install python3-tk
  
 ## 目标
  
