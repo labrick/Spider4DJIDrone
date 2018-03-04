@@ -45,11 +45,11 @@
 
 分析一页
 
-![one](https://github.com/labrick/Spider4DJIDrone/raw/master/image/result_1page.png,"onepage")
+![one](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_1page.png)
 
 分析五页
 
-![five](https://github.com/labrick/Spider4DJIDrone/raw/master/image/result_5page.png,"fivepage")
+![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_5page.png)
 
 ## 分工
  
