@@ -55,12 +55,11 @@ def main():
     baseUrl = 'https://bbs.dji.com/forum-60-1.html'    # DJI社区
     minPageNum = 1
     maxPageNum = getMaxPageNum(baseUrl)
+    print("link num:" + str(len(linkList)) + ", device Num:" + str(len(link2DeviceList)))
     linkList, link2DeviceList = getLinkDeviceList(minPageNum, maxPageNum)
 
-    for each in linkList:
-       print(each)
-    for each in link2DeviceList:
-       print(each)
+    for index in range(len(linkList)):
+        print(str(index) + "\t" + linkList[index] + "\t" + link2DeviceList[index])
 
 if __name__ == '__main__':
     main()
