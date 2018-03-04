@@ -33,6 +33,7 @@ def getLinkDeviceList(minPageNum, maxPageNum):
         linkList.extend(html.xpath('//tbody/tr/th/p[1]/a[1]/@href'))
         link2DeviceList.extend(html.xpath('//tbody/tr/th/p[2]/em[2]/text()[1]'))
         pageNum += 1
+    print()     # print \n
 
     for index in range(len(linkList)):
         linkList[index] = POST_URL + linkList[index]
@@ -43,6 +44,12 @@ def getLinkDeviceList(minPageNum, maxPageNum):
         link2DeviceList[index] = link2DeviceList[index].rstrip()
 
     return linkList, link2DeviceList
+
+def getLinkDevice():
+    baseUrl = 'https://bbs.dji.com/forum-60-1.html'    # DJI社区
+    minPageNum = 1
+    maxPageNum = 2 # getMaxPageNum(baseUrl)
+    return getLinkDeviceList(minPageNum, maxPageNum)
 
 def main():
     baseUrl = 'https://bbs.dji.com/forum-60-1.html'    # DJI社区
