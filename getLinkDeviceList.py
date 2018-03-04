@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import sys
+
 import requests
 import re
 from lxml import etree
@@ -23,8 +25,9 @@ def getMaxPageNum(html):
 
 def getLinkDeviceList(baseUrl, minPageNum, maxPageNum):
     pageNum = minPageNum
-    while pageNum <= maxPageNum :
+    while pageNum <= maxPageNum:
         pageUrl = POST_URL + 'forum-60-' + str(pageNum) + '.html'
+        sys.stdout.write("\ranalyse page:" + str(pageNum) + "/" + str(maxPageNum))
         # print(pageUrl)
         html = getHtml(pageUrl)
         linkList.extend(html.xpath('//tbody/tr/th/p[1]/a[1]/@href'))
