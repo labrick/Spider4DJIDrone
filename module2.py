@@ -1,16 +1,24 @@
 #!/usr/bin/python3
 
-from module1 import linkList, link2DeviceList
+from getLinkDeviceList import getLinkDevice
+import common
 
 linkListUnident = []
 djiDevicePopularity = {}
-djiDevice = []
+
+def writeDevice2Json(djiDevice):
+    deviceDict = {}
+    for each in djiDevice:
+        deviceDict[each] = []
+    common.saveDeviceName(deviceDict)
 
 def getUnidentLinkList(linkList, link2DeviceList):
     linkListUnident =[]
 
     djiDevice = list(set(link2DeviceList))
     djiDevice.remove("")
+
+    writeDevice2Json(djiDevice)
 
     djiDevicePopularity = {}
     for element in djiDevice:
@@ -22,13 +30,18 @@ def getUnidentLinkList(linkList, link2DeviceList):
         else:
             djiDevicePopularity[link2DeviceList[index]] += 1
 
-    return linkListUnident, djiDevicePopularity, djiDevice
+    print("unident link num:" + str((len(linkListUnident))))
+
+    return linkListUnident, djiDevicePopularity
 
 def main():
-    linkListUnident,djiDevicePopularity, djiDevice = getUnidentLinkList(linkList, link2DeviceList)
-    print(linkListUnident)
-    print(djiDevicePopularity)
-    print(djiDevice)
+    linkList, link2DeviceList = getLinkDevice()
+    linkListUnident, djiDevicePopularity = getUnidentLinkList(linkList, link2DeviceList)
+
+    for each in linkListUnident:
+        print(each)
+    for djiDeviceKey, popularityValue in djiDevicePopularity.items():
+        print("%12s:\t%d" % (djiDeviceKey, popularityValue))
 
 if __name__ == '__main__':
     main()
