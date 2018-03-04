@@ -52,14 +52,16 @@ def getLinkDevice(maxPage = None):
         maxPageNum = getMaxPageNum(baseUrl)
     else:
         maxPageNum = maxPage
-    return getLinkDeviceList(minPageNum, maxPageNum)
+    linkList, link2DeviceList = getLinkDeviceList(minPageNum, maxPageNum)
+    print("link num:" + str(len(linkList)) + ", device Num:" + str(len(link2DeviceList)))
+    return linkList, link2DeviceList
 
 def main():
     baseUrl = 'https://bbs.dji.com/forum-60-1.html'    # DJI社区
     minPageNum = 1
     maxPageNum = getMaxPageNum(baseUrl)
-    print("link num:" + str(len(linkList)) + ", device Num:" + str(len(link2DeviceList)))
     linkList, link2DeviceList = getLinkDeviceList(minPageNum, maxPageNum)
+    print("link num:" + str(len(linkList)) + ", device Num:" + str(len(link2DeviceList)))
 
     for index in range(len(linkList)):
         print(str(index) + "\t" + linkList[index] + "\t" + link2DeviceList[index])
