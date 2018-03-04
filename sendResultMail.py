@@ -7,7 +7,8 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from email.utils import parseaddr, formataddr
 import matplotlib.pyplot as plt
-#from module2 import djiDevicePopularity
+
+from anaEachPage import getPopularity
 
 djiDevicePopularity = {'mavic air': 1, 'mavic pro': 1, 'spark': 2}
 
@@ -15,6 +16,7 @@ def getResult():
     nameList = []
     valueList = []
     totalValue = 0
+    djiDevicePopularity = getPopularity()
     for value in djiDevicePopularity.values():
         totalValue += value
     totalValue = float(totalValue)
@@ -23,7 +25,7 @@ def getResult():
         valueList.append(djiDevicePopularity[key]/totalValue)
     plt.bar(range(len(valueList)), valueList, color='rgb',tick_label=nameList)
     plt.savefig("result.png")
-    
+
 def sendMail():
     # Basic Imformation
     mailto_list = ['xxxxx@xx.com']
