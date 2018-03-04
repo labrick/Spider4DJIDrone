@@ -35,8 +35,9 @@ def getUnidentLinkList(linkList, link2DeviceList):
     return linkListUnident, djiDevicePopularity
 
 def getLinkPopularity():
-    linkList, link2DeviceList = getLinkDevice()
+    linkList, link2DeviceList = getLinkDevice(5)
     linkListUnident, djiDevicePopularity = getUnidentLinkList(linkList, link2DeviceList)
+    return linkListUnident, djiDevicePopularity
 
 def main():
     linkList, link2DeviceList = getLinkDevice()
