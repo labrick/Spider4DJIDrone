@@ -1,11 +1,5 @@
 # DJI产品流行度分析
 
-## 依赖关系
-
-    sudo pip3 install lxml
-    sudo pip3 install matplotlib
-    sudo apt-get install python3-tk
- 
 ## 目标
  
 1. 编写一个爬虫，解析大疆社区中的作品展示，获得各产品流行度值，并通过图表直观给出各产品受欢迎程度
@@ -39,6 +33,17 @@
     ```
 4. 将步骤2/3中统计的流行度值归一化并制成图表，发到电子邮箱中; 
 5. 形成文档
+
+## 依赖关系
+
+    sudo pip3 install lxml
+    sudo pip3 install matplotlib
+    sudo apt-get install python3-tk
+ 
+## 运行方法
+
+    vi sendResultMail.py修改邮箱地址
+    python3 sendResultMail.py
 
 ## 运行结果
 
