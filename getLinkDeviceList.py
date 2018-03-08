@@ -1,12 +1,10 @@
 #!/usr/bin/python3
 
 import sys
-
 import requests
 import re
 from lxml import etree
 
-POST_URL = 'https://bbs.dji.com/'
 linkList = []
 link2DeviceList = []
 
@@ -26,7 +24,7 @@ def getMaxPageNum(html):
 def getLinkDeviceList(minPageNum, maxPageNum):
     pageNum = minPageNum
     while pageNum <= maxPageNum:
-        pageUrl = POST_URL + 'forum-60-' + str(pageNum) + '.html'
+        pageUrl = 'https://bbs.dji.com/' + 'forum-60-' + str(pageNum) + '.html'
         sys.stdout.write("\ranalyse page:" + str(pageNum) + "/" + str(maxPageNum))
         # print(pageUrl)
         html = getHtml(pageUrl)
@@ -36,7 +34,7 @@ def getLinkDeviceList(minPageNum, maxPageNum):
     print()     # print \n
 
     for index in range(len(linkList)):
-        linkList[index] = POST_URL + linkList[index]
+        linkList[index] = 'https://bbs.dji.com/' + linkList[index]
 
     for index in range(len(link2DeviceList)):
         link2DeviceList[index] = link2DeviceList[index].replace("发表于", '')
@@ -57,10 +55,8 @@ def getLinkDevice(maxPage = None):
     return linkList, link2DeviceList
 
 def main():
-    baseUrl = 'https://bbs.dji.com/forum-60-1.html'    # DJI社区
-    minPageNum = 1
-    maxPageNum = getMaxPageNum(baseUrl)
-    linkList, link2DeviceList = getLinkDeviceList(minPageNum, maxPageNum)
+
+    linkList, link2DeviceList = getLinkDevice()
     print("link num:" + str(len(linkList)) + ", device Num:" + str(len(link2DeviceList)))
 
     for index in range(len(linkList)):
