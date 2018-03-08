@@ -55,6 +55,11 @@
 
 ![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_5page.png)
 
+分析二页，解决中文乱码问题后运行
+
+![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_2page_CN.png)
+
+
 ## 分工
  
 YANAN: 步骤3 
