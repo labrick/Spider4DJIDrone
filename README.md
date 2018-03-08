@@ -95,3 +95,16 @@ YINBIAO：步骤1
     A: 将程序自动获取的DJI设备列表保存为json文件，并在json文件中手动添加每个设备的别称，同时保证再次执行程序时不会删除掉之前添加的设备别称。
 
 3. Q: 理论上应该是个人写一个模块，然后用最底层一个python文件将各个模块粘合在一起，这样每个模块才更具有独立性，需要改改改！！！
+
+4. Q: 绘制流行度图表时，无人机型号为中文时乱码无法显示。（文字可正常显示，但因间隔小存在重叠，建议图表改为横向显示）
+
+    A: (1) 将win7中/windwos/fonts目录下SIMSUN.ttf（对应宋体字体）拷贝到ubuntu /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/fonts/ttf目录中
+	
+    (2) 删除~/.cache/matplotlib的缓冲目录: rm -rf ~/.matplotlib/\*.cache
+	
+    (3) 第三修改修改配置文件：<br>
+	    1) /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/matplotlibrc,找到如下两项:<br>
+         去掉注释 #，并在font.sans-serif冒号后加上 SIMSUN, 保存退出。<br>
+         font.family         : sans-serif  
+         font.sans-serif     : SIMSUN, ...,sans-serif <br>
+        2) 找到axes.unicode_minus，将True改git为False，解决'-'显示为方块问题<br>
