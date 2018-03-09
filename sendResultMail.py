@@ -23,7 +23,13 @@ def getResult():
     for key in djiDevicePopularity:
         nameList.append(key)
         valueList.append(djiDevicePopularity[key]/totalValue)
-    plt.bar(range(len(valueList)), valueList, color='rgb',tick_label=nameList)
+    # plt.bar(range(len(valueList)), valueList, color='rgb',tick_label=nameList)
+    # modified by Zhong  2018.03.09
+    plt.barh(range(len(valueList)), valueList, color='rgb',tick_label=nameList)
+    plt.xlabel('流行度')
+    plt.ylabel('DJI产品型号')
+    plt.title('DJI产品流行度分析\n数据来源:https://bbs.dji.com/forum-60-1.html')
+
     plt.savefig("result.png")
 
 def sendMail():
@@ -65,4 +71,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
