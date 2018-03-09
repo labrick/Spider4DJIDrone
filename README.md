@@ -47,17 +47,21 @@
 
 ## 运行结果
 
-分析一页
+分析1页
 
 ![one](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_1page.png)
 
-分析五页
+分析5页
 
 ![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_5page.png)
 
-分析二页，解决中文乱码问题后运行
+分析2页，解决中文乱码问题后运行
 
 ![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_2page_CN.png)
+
+分析10页，图表改为横向显示，同时添加坐标信息及图题
+
+![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_10page_CN.png)
 
 
 ## 分工
