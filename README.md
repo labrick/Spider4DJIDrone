@@ -101,7 +101,7 @@ YINBIAO：步骤1
 
 3. Q: 理论上应该是个人写一个模块，然后用最底层一个python文件将各个模块粘合在一起，这样每个模块才更具有独立性，需要改改改！！！
 
-4. Q: 绘制流行度图表时，无人机型号为中文时乱码无法显示。（文字可正常显示，但因间隔小存在重叠，建议图表改为横向显示）
+4. Q: 绘制流行度图表时，无人机型号为中文时乱码无法显示。（图表改为横向显示，添加横纵坐标说明及图题）
 
     A: (1) 将win7中/windwos/fonts目录下SIMSUN.ttf（对应宋体字体）拷贝到ubuntu /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/fonts/ttf目录中
 	
