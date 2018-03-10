@@ -111,3 +111,7 @@ YINBIAO：步骤1
          font.family         : sans-serif  
          font.sans-serif     : SIMSUN, ...,sans-serif <br>
         2) 找到axes.unicode_minus，将True改git为False，解决'-'显示为方块问题<br>
+
+5. Q: 获取所有帖子信息到数据库时，为了避免重复分析帖子信息，需要判断已获取帖子与未处理过的帖子的分界线；
+
+    A: 最后评论时间新于数据中最新时间的帖子为本次需要分析的帖子；在需要分析的帖子里，有些是已经更新在数据库中的，这些需要在数据库中找到，更新最后评论时间；其他的直接写入数据库
