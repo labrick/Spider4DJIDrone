@@ -39,6 +39,7 @@
     sudo pip3 install lxml
     sudo pip3 install matplotlib
     sudo apt-get install python3-tk
+    sudo pip3 install beautifulsoup4
  
 ## 运行方法
 
