@@ -6,6 +6,8 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from email.utils import parseaddr, formataddr
+import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 from anaEachPage import getPopularity
