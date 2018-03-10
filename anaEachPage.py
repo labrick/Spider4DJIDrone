@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import sys
+
 import http.client as httplib
 from lxml import etree
 from bs4 import BeautifulSoup
@@ -35,24 +37,26 @@ def modifyPopularity(allStr, djiDevicePopularity):
     for deviceName, nicknameList in deviceNames.items():
         if allStr.find(deviceName) != -1:
             djiDevicePopularity[deviceName] += 1
-            print("find " + deviceName)
+            # print("find " + deviceName)
             return      # analyse over, but really?
         for nickname in nicknameList:
             if allStr.find(nickname) != -1:
-                print("find " + nickname)
+                # print("find " + nickname)
                 djiDevicePopularity[deviceName] += 1
                 return
-    print("find nothing")
+    # print("find nothing")
 
     # print(elements[0].text)
 
 def getPopularity():
     linkList, djiDevicePopularity = getLinkPopularity()
-    for url in linkList:
-        allStr = getHtmlContext(url)
+    for index in range(len(linkList)):
+        sys.stdout.write("\ranalyse unident page:" + str(index) + "/" + str(len(linkList)))
+        allStr = getHtmlContext(linkList[index])
         # print(allStr)
-        print("get " + url + " OK!!!")
+        # print("get " + url + " OK!!!")
         modifyPopularity(allStr, djiDevicePopularity)
+    print()
     return djiDevicePopularity
 
 
