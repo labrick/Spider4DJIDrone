@@ -27,7 +27,7 @@ def getMaxPageNum():
     #print(maxNum)
     return maxNum
 
-def getLinkDevice(maxPage = None):
+def updateData(sqliteWrapper, maxPage = None):
     if maxPage is None:
         maxPageNum = getMaxPageNum()
     else:
@@ -39,52 +39,63 @@ def getLinkDevice(maxPage = None):
         html = getHtml(pageUrl)
 
         postLink = html.xpath('//tbody/tr/th/p[1]/a[1]/@href')
-        print(postLink)
-        print(len(postLink))
         postBy = html.xpath('//tbody/tr/th/p[2]/cite/a/text()[1]')
-        print(postBy)
-        print(len(postBy))
 
+        # postDate = []
+        # for url in postLink:
+        #     subHtml = getHtml(BASE_URL + url)
+        #     dateTime = subHtml.xpath('//*[@id="postlist"]/div[1]/table/tr[1]/td/div[1]/div/div[2]/div[5]/span[1]/span/@title')
+        #     # print(dateTime)
+        #     if len(dateTime) == 0:
+        #         dateTime = subHtml.xpath('//*[@id="postlist"]/div[1]/table/tr[1]/td/div[1]/div/div[2]/div[5]/span[1]/text()[1]')
+        #         # print("---------" + str(dateTime))
+        #     postDate.append(dateTime[0])
         postDate = []
-        for index in range(len(postLink)):
-            date = html.xpath('//tbody[' + str(index+2) + ']/tr/th/p[2]/em[2]/span/span/@title')
-            if len(date) == 0:
-                print("get")
-                date = html.xpath('//tbody[' + str(index+2) + ']/tr/th/p[2]/em[2]/span/text()[1]')
-            if len(date) == 0:
+        index = 0
+        itbody = 0
+        while index < len(postLink):
+            dateTime = html.xpath('//*[@id="threadlist"]/div/form/table/tbody[' + str(itbody+2) + ']/tr/th/p[2]/em[2]/span/span/@title')
+            if len(dateTime) == 0:
+                dateTime = html.xpath('//*[@id="threadlist"]/div/form/table/tbody[' + str(itbody+2) + ']/tr/th/p[2]/em[2]/span/text()[1]')
+                # print("---------" + str(dateTime))
+            itbody += 1
+            if len(dateTime) == 0:
                 continue
-            print("---------" + str(date))
-            postDate.append(date)
-            # if postDate[index] is None:
-            #     postDate[index] = html.xpath('//tbody/tr/th/p[2]/em[2]/span/text()[1]')
-            # print(postDate[index])
-        print(postDate)
-        print(len(postDate))
+            index += 1
+            postDate.append(dateTime[0])
+
         device = html.xpath('//tbody/tr/th/p[2]/em[2]/text()[1]')
-        print(device)
-        print(len(device))
+        visitTimes = html.xpath('//tbody/tr/th/p[2]/em[2]/text()[2]')
         commentTimes = html.xpath('//tbody/tr/th/p[2]/a/text()[1]')
-        print(commentTimes)
-        print(len(commentTimes))
-        updateTime = html.xpath('//tbody/tr/th/p[2]/em[3]/a/span/@title')
-        print(updateTime)
-        print(len(updateTime))
-        return
-        # linkList.extend(html.xpath('//tbody/tr/th/p[1]/a[1]/@href'))
-        # link2DeviceList.extend(html.xpath('//tbody/tr/th/p[2]/em[2]/text()[1]'))
+
+        # complex, need to simplify
+        updateTime = []
+        index = 0
+        itbody = 0
+        while index < len(postLink):
+            dateTime = html.xpath('//*[@id="threadlist"]/div/form/table/tbody[' + str(itbody+2) + ']/tr/th/p[2]/em[3]/a/span/@title')
+            if len(dateTime) == 0:
+                dateTime = html.xpath('//*[@id="threadlist"]/div/form/table/tbody[' + str(itbody+2) + ']/tr/th/p[2]/em[3]/a/text()[1]')
+                # print("---------" + str(dateTime))
+            itbody += 1
+            if len(dateTime) == 0:
+                continue
+            index += 1
+            updateTime.append(dateTime[0])
+
+        for i in range(len(postLink)):
+            postLink[i] = BASE_URL + postLink[i]
+            device[i] = device[i].replace("发表于", '').replace("用户", '').strip()
+            visitTimes[i] =  visitTimes[i].replace("人查看", "").strip()
+            commentTimes[i] = commentTimes[i].replace("条回复", "")
+            # print("postDate: " + str(postDate[i]) + "\npostBy: " + str(postBy[i]) + "\ndevice: " + str(device[i]) + "\npostLink: " + \
+            #         str(postLink[i]) + "\nvisitTimes: " + str(visitTimes[i]) + "\ncommentTimes: " + str(commentTimes[i]) + "\nupdateTime: " + str(updateTime[i]))
+            # print("-----------")
+            sqliteWrapper.saveData(str(postDate[i]), str(postBy[i]), str(device[i]), str(postLink[i]), int(visitTimes[i]), int(commentTimes[i]), str(updateTime[i]))
         pageNum += 1
     print()     # print \n
 
-    for index in range(len(linkList)):
-        linkList[index] = BASE_URL + linkList[index]
-
-    for index in range(len(link2DeviceList)):
-        link2DeviceList[index] = link2DeviceList[index].replace("发表于", '')
-        link2DeviceList[index] = link2DeviceList[index].replace("用户", '')
-        link2DeviceList[index] = link2DeviceList[index].rstrip()
-
     print("link num:" + str(len(linkList)) + ", device Num:" + str(len(link2DeviceList)))
-    return linkList, link2DeviceList
 
 def main():
     sqliteWrapper = SqliteWrapper("C222")
@@ -94,7 +105,7 @@ def main():
     if item is not None:
         print(item[0])
 
-    linkList, link2DeviceList = getLinkDevice()
+    updateData(sqliteWrapper)
     print("link num:" + str(len(linkList)) + ", device Num:" + str(len(link2DeviceList)))
 
     # for index in range(len(linkList)):
