@@ -39,6 +39,9 @@ def updateData(sqliteWrapper, maxPage = None):
         html = getHtml(pageUrl)
 
         postLink = html.xpath('//tbody/tr/th/p[1]/a[1]/@href')
+        postTitle = html.xpath('//tbody/tr/th/p[1]/a/text()[1]')
+        # bad method
+        postTitle = list(filter(lambda t: t!='new', postTitle))
         postBy = html.xpath('//tbody/tr/th/p[2]/cite/a/text()[1]')
 
         # postDate = []
@@ -88,10 +91,10 @@ def updateData(sqliteWrapper, maxPage = None):
             device[i] = device[i].replace("发表于", '').replace("用户", '').strip()
             visitTimes[i] =  visitTimes[i].replace("人查看", "").strip()
             commentTimes[i] = commentTimes[i].replace("条回复", "")
-            # print("postDate: " + str(postDate[i]) + "\npostBy: " + str(postBy[i]) + "\ndevice: " + str(device[i]) + "\npostLink: " + \
+            # print("postDate: " + str(postDate[i]) + "\npostBy: " + str(postBy[i]) + "\ndevice: " + str(device[i]) + "\npostTitle: " + postTitle[i] + "\npostLink: " + \
             #         str(postLink[i]) + "\nvisitTimes: " + str(visitTimes[i]) + "\ncommentTimes: " + str(commentTimes[i]) + "\nupdateTime: " + str(updateTime[i]))
             # print("-----------")
-            sqliteWrapper.saveData(str(postDate[i]), str(postBy[i]), str(device[i]), str(postLink[i]), int(visitTimes[i]), int(commentTimes[i]), str(updateTime[i]))
+            sqliteWrapper.saveData(str(postDate[i]), str(postBy[i]), str(device[i]), str(postTitle[i]), str(postLink[i]), int(visitTimes[i]), int(commentTimes[i]), str(updateTime[i]))
         pageNum += 1
     print()     # print \n
 
@@ -99,8 +102,6 @@ def updateData(sqliteWrapper, maxPage = None):
 
 def main():
     sqliteWrapper = SqliteWrapper("C222")
-    sqliteWrapper.saveData("2018-3-10", "YN", "spark", "https://111", 10, 10, "2018-3-10 12:32")
-    sqliteWrapper.saveData("2018-3-7", "YN", "mavic", "https://122", 10, 10, "2018-3-10 12:32")
     item = sqliteWrapper.getNewstDate()
     if item is not None:
         print(item[0])
