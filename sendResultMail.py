@@ -9,30 +9,86 @@ from email.utils import parseaddr, formataddr
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
-
+import matplotlib as mpl
+import numpy as np
 from anaEachPage import getPopularity
 
-djiDevicePopularity = {'mavic air': 1, 'mavic pro': 1, 'spark': 2}
+zhfont = mpl.font_manager.FontProperties(fname='/usr/share/fonts/truetype/arphic/uming.ttc')
 
 def getResult():
+    # init values
     nameList = []
     valueList = []
-    totalValue = 0
+    deviceSeries = {'Osmo':0, 'Osmo Mobile':0, 'Spark':0, 'Mavic Pro':0, 'Mavic Air':0, 'Phantom 4/4Pro':0, 'Phantom 3/3SE':0, 'Inspire':0, 'Other':0}
     djiDevicePopularity = getPopularity()
-    for value in djiDevicePopularity.values():
-        totalValue += value
-    totalValue = float(totalValue)
+    # Make sure the initial value is zero
+    for key in deviceSeries:
+        deviceSeries[key] = 0
+    # Classify the devices 
     for key in djiDevicePopularity:
-        nameList.append(key)
-        valueList.append(djiDevicePopularity[key]/totalValue)
-    # plt.bar(range(len(valueList)), valueList, color='rgb',tick_label=nameList)
-    # modified by Zhong  2018.03.09
-    plt.barh(range(len(valueList)), valueList, color='rgb',tick_label=nameList)
-    plt.xlabel('流行度')
-    plt.ylabel('DJI产品型号')
-    plt.title('DJI产品流行度分析\n数据来源:https://bbs.dji.com/forum-60-1.html')
+        if key == 'osmo mobile' or key == 'osmo mobile 2':
+            deviceSeries['Osmo Mobile'] += djiDevicePopularity[key]
+        elif key == 'osmo' or key == 'osmo＋' or key == 'osmo pro' or key == 'osmo raw':
+            deviceSeries['Osmo'] += djiDevicePopularity[key]
+        elif key == '晓spark':
+            deviceSeries['Spark'] += djiDevicePopularity[key]
+        elif key == 'mavic pro' or key == 'mavic pro 铂金版':
+            deviceSeries['Mavic Pro'] += djiDevicePopularity[key]
+        elif key == 'mavic air':
+            deviceSeries['Mavic Air'] += djiDevicePopularity[key]
+        elif key == '精灵4a' or key == '精灵4 pro' or key == '精灵4':
+            deviceSeries['Phantom 4/4Pro'] += djiDevicePopularity[key]
+        elif key == '精灵3' or key == '精灵3 se':
+            deviceSeries['Phantom 3/3SE'] += djiDevicePopularity[key]
+        elif key == '悟1' or key == '悟2' or key == '悟raw' or key == '悟pro':
+            deviceSeries['Inspire'] += djiDevicePopularity[key]
+        else:
+            deviceSeries['Other'] += djiDevicePopularity[key];
+    deviceSerieSorted = sorted(deviceSeries.items(), key = lambda deviceSeries:deviceSeries[0]);
+    for index in deviceSerieSorted:
+        if index[1] == 0:
+            continue
+        nameList.append(index[0]);
+        valueList.append(index[1])
+    valueListPlot = [];
+    valueListPlot.append(valueList)
+    plotBar(nameList, valueListPlot)
+    plotPie(nameList, valueListPlot[0])
 
-    plt.savefig("result.png")
+def addLabels(rects):
+    for rect in rects:
+        width = rect.get_width()
+        plt.text(width,rect.get_y() + rect.get_height()/ 2, width, ha = 'left', va ='center')
+        rect.set_edgecolor('white')
+
+def plotPie(nameList, valueList):
+    if(len(nameList) != len(valueList)):
+        print('Error: the parameters must have same lenth!!!')
+        return
+    plt.clf()
+    pi = plt.pie(valueList,labels=nameList,autopct='%1.1f%%')
+    for font in pi[1]:
+        font.set_fontproperties(zhfont)
+    plt.title(u'DJI产品流行度分析\n数据来源:https://bbs.dji.com/forum-60-1.html',fontproperties=zhfont)
+    plt.savefig("pie.png")
+
+def plotBar(nameList, valueList):
+    barNum = len(valueList)
+    if barNum == 0:
+        print('Error: There is no data !!!!!!!!')
+        return
+    index = np.arange(len(valueList[0]))
+    # two bars for each device
+    index = index * barNum
+    colors = ['r','b','g','y']
+    for i in range(barNum):
+        rect = plt.barh(index+i, valueList[i], color=colors[i%4]);
+        addLabels(rect)
+    plt.yticks(index+(barNum-1)/2, nameList,fontproperties=zhfont)
+    plt.xlabel('帖子数量', fontproperties=zhfont)
+    plt.ylabel('DJI产品型号',fontproperties=zhfont)
+    plt.title(u'DJI产品流行度分析\n数据来源:https://bbs.dji.com/forum-60-1.html',fontproperties=zhfont)
+    plt.savefig("bar.png")
 
 def sendMail():
     # Basic Imformation
@@ -69,7 +125,7 @@ def sendMail():
 
 def main():
     getResult()
-    sendMail()
+    #sendMail()
 
 if __name__ == '__main__':
     main()
