@@ -14,7 +14,7 @@ from lxml import etree
 class SqliteWrapper:
     ''' docstring for SqliteWrapper '''
     def __init__(self, tableName):
-        self.fundb = sqlite3.connect("./fund.db")
+        self.fundb = sqlite3.connect("./dji.db")
         self.fundb.text_factory = str
         self.dbPointer = self.fundb.cursor()
         self.tableName = tableName
@@ -29,11 +29,11 @@ class SqliteWrapper:
         return time.strftime("%Y-%m-%d %H:%M", t)
 
     # save data to sqlite db
-    def saveData(self, postDate, postBy, device, postLink, visitTimes, commentTimes, updateTime):
+    def saveData(self, postDate, postBy, device, postTitle, postLink, visitTimes, commentTimes, updateTime):
         postDate = self.fmtDate(postDate)
         updateTime = self.fmtDateTime(updateTime)
         sql = "CREATE TABLE IF NOT EXISTS " + self.tableName + \
-            " (postDate TEXT, postBy VARCHAR(20), device TEXT, postLink TEXT UNIQUE, visitTimes INT, commentTimes INT, updateTime VARCHAR(20))"
+            " (postDate TEXT, postBy VARCHAR(20), device TEXT, postTitle TEXT, postLink TEXT UNIQUE, visitTimes INT, commentTimes INT, updateTime VARCHAR(20))"
         self.dbPointer.execute(sql)
 
         # INSERT data
@@ -41,7 +41,7 @@ class SqliteWrapper:
         try:
             self.dbPointer.execute("INSERT INTO " + self.tableName + \
                     # " VALUES (?, ?, ?, ?, ?)", (date(postDate), postBy, visitTimes, commentTimes, datetime(updateTime)))
-                    " VALUES (?, ?, ?, ?, ?, ?, ?)", (postDate, postBy, device, postLink, visitTimes, commentTimes, updateTime))
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (postDate, postBy, device, postTitle, postLink, visitTimes, commentTimes, updateTime))
         except:
             pass
             # 修改已经存在的值
