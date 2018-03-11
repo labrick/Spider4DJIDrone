@@ -31,7 +31,7 @@ def getLinkDevice(maxPage = None):
     else:
         maxPageNum = maxPage
 
-    maxPageNum = 1  # for test
+    # maxPageNum = 1  # for test
     pageNum = 1
     while pageNum <= maxPageNum:
         pageUrl = BASE_URL + 'forum-60-' + str(pageNum) + '.html'
