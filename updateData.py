@@ -20,9 +20,30 @@ def getHtml(url):
 
 def cleanData(html):
     postLink = html.xpath('//tbody/tr/th/p[1]/a[1]/@href')
-    postTitle = html.xpath('//tbody/tr/th/p[1]/a/text()[1]')
+
+    # postTitle = html.xpath('//*[@id="threadlisttableid"]/tbody[6]/tr/th/p[1]/a/text()')
     # bad method
-    postTitle = list(filter(lambda t: t!='new', postTitle))
+    # postTitle = list(filter(lambda t: t!='new', postTitle))
+    # solve empty title problem
+    postTitle = []
+    index = 0
+    itbody = 0
+    while index < len(postLink):
+        postitle = html.xpath('//*[@id="threadlisttableid"]/tbody[' + str(itbody+2) + ']/tr/th/p[1]/a/text()[1]')
+        postlink = html.xpath('//*[@id="threadlisttableid"]/tbody[' + str(itbody+2) + ']/tr/th/p[1]/a/@href')
+        # print(postitle)
+        # print(postlink)
+        # print("-----" + str(index))
+        itbody += 1
+
+        if (len(postlink) == 0) and (len(postitle) == 0):
+            continue
+        index += 1
+        if (len(postitle)) == 0:
+            postTitle.append("")
+        else:
+            postTitle.append(postitle[0])
+
     postBy = html.xpath('//tbody/tr/th/p[2]/cite/a/text()[1]')
 
     # postDate = []
@@ -66,6 +87,7 @@ def cleanData(html):
             continue
         index += 1
         updateTime.append(dateTime[0])
+
     if (len(postLink) != len(postDate)) or \
         (len(postLink) != len(postBy)) or \
         (len(postLink) != len(postTitle)) or \
@@ -73,7 +95,16 @@ def cleanData(html):
         (len(postLink) != len(visitTimes)) or \
         (len(postLink) != len(commentTimes)) or \
         (len(postLink) != len(updateTime)):
+        print(len(postLink))
+        print(len(postDate))
+        print(len(postBy))
+        print(len(postTitle))
+        print(len(device))
+        print(len(visitTimes))
+        print(len(commentTimes))
+        print(len(updateTime))
         print("ERROR in cleanData!!!")
+
     return postDate, postBy, device, postTitle, postLink, \
                 visitTimes, commentTimes, updateTime
 
@@ -92,7 +123,7 @@ def updateData(sqliteWrapper):
 
     maxPageNum = getMaxPageNum()
     pageNum = maxPageNum - sqlPageNum
-    print("all pages: " + str(maxPageNum) + ", pages in sql: " + str(sqlPageNum) + ", updating pages:" + str(pageNum))
+    print("all pages:" + str(maxPageNum) + ", pages in sql:" + str(sqlPageNum) + ", updating pages:" + str(pageNum))
     while pageNum > 0:
         pageUrl = BASE_URL + 'forum.php?mod=forumdisplay&fid=60&orderby=dateline&orderby=dateline&filter=typeid&page=' + str(pageNum)
         # pageUrl = BASE_URL + 'forum-60-' + str(pageNum) + '.html'
