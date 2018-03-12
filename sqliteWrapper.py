@@ -18,6 +18,9 @@ class SqliteWrapper:
         self.fundb.text_factory = str
         self.dbPointer = self.fundb.cursor()
         self.tableName = tableName
+        sql = "CREATE TABLE IF NOT EXISTS " + self.tableName + \
+            " (postDate TEXT, postBy VARCHAR(20), device TEXT, postTitle TEXT, postLink TEXT UNIQUE, visitTimes INT, commentTimes INT, updateTime VARCHAR(20))"
+        self.dbPointer.execute(sql)
 
     def fmtDate(self, dateStr):
         t = time.strptime(dateStr, "%Y-%m-%d")
@@ -32,9 +35,9 @@ class SqliteWrapper:
     def saveData(self, postDate, postBy, device, postTitle, postLink, visitTimes, commentTimes, updateTime):
         postDate = self.fmtDate(postDate)
         updateTime = self.fmtDateTime(updateTime)
-        sql = "CREATE TABLE IF NOT EXISTS " + self.tableName + \
-            " (postDate TEXT, postBy VARCHAR(20), device TEXT, postTitle TEXT, postLink TEXT UNIQUE, visitTimes INT, commentTimes INT, updateTime VARCHAR(20))"
-        self.dbPointer.execute(sql)
+        # sql = "CREATE TABLE IF NOT EXISTS " + self.tableName + \
+        #     " (postDate TEXT, postBy VARCHAR(20), device TEXT, postTitle TEXT, postLink TEXT UNIQUE, visitTimes INT, commentTimes INT, updateTime VARCHAR(20))"
+        # self.dbPointer.execute(sql)
 
         # INSERT data
         # print("deal with: %s, tableName: %s" %(date, tableName))
@@ -48,9 +51,13 @@ class SqliteWrapper:
 
         self.fundb.commit()
 
-    def getNewstDate(self):
+    def getLastestDate(self):
         self.dbPointer.execute("SELECT * FROM " + self.tableName + " ORDER BY DATE(postDate) DESC")
         return self.dbPointer.fetchone()
+
+    def getRowNum(self):
+        self.dbPointer.execute("SELECT COUNT(*) FROM " + self.tableName)
+        return self.dbPointer.fetchone()[0]
 
     # dump data from db
     def dumpDb(self, tableName):
