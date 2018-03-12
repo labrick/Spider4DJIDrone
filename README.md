@@ -7,9 +7,9 @@
  
 ## 解决方案
  
-1. 爬取[链接:https://bbs.dji.com/forum-60-1.html](https://bbs.dji.com/forum-60-1.html)，获取帖子信息：发帖人，链接，发帖人所用设备，发帖时间，帖子访问次数，回复次数，最后回复时间；并将这些写入sqlite数据库中；数据中表格格式如下:
+1. 爬取[链接:https://bbs.dji.com/forum-60-1.html](https://bbs.dji.com/forum-60-1.html)，获取帖子信息：发帖日期，发帖人，发帖人所用设备，帖子标题，链接，帖子访问次数，回复次数，最后回复时间；并将这些写入sqlite数据库中；数据库中表格格式如下:
     ```
-    CREATE TABLE C222 (postDate TEXT, postBy VARCHAR(20), device TEXT, postLink TEXT UNIQUE, visitTimes INT, commentTimes INT, updateTime VARCHAR(20));
+    postDate, postBy, device, postTitle, postLink UNIQUE, visitTimes, commentTimes, updateTime
     ```
 2. 统计DJI产品设备名写入JSON文件，并判断发帖人设备是否存在，如果存在，该设备流行度加一；如果不存在，保存该链接；
     ```
