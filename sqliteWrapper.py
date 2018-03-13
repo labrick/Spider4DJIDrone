@@ -72,18 +72,44 @@ class SqliteWrapper:
     def getPostLink(self, startDate, endDate):
         startDate = self.fmtDate(startDate + "-01")
         endDate = self.fmtDate(endDate + "-01")
-        print(startDate)
-        print(endDate)
-        self.dbPointer.execute('SELECT postLink FROM ' + self.tableName + ' where postDate between "' + startDate + '" and "' + endDate + '"')
-        postLinks = self.dbPointer.fetchall()
-        return postLinks
+        # print(startDate)
+        # print(endDate)
+        self.dbPointer.execute('SELECT postLink FROM ' + self.tableName + ' where postDate between "' \
+                + startDate + '" and "' + endDate + '" ORDER BY postDate DESC')
+        postLinks = list(self.dbPointer.fetchall())
+        self.dbPointer.execute('SELECT postDate FROM ' + self.tableName + ' where postDate between "' \
+                + startDate + '" and "' + endDate + '" ORDER BY postDate DESC')
+        postDates = list(self.dbPointer.fetchall())
+        for index in range(len(postDates)):
+            if postDates[index][0] != endDate:
+                break;
+            del postLinks[0]
+
+        result = []
+        for postLink in postLinks:
+            result.append(postLink[0])
+        return result
 
     def getDevice(self, startDate, endDate):
         startDate = self.fmtDate(startDate + "-01")
         endDate = self.fmtDate(endDate + "-01")
-        print(startDate)
-        print(endDate)
-        self.dbPointer.execute('SELECT device FROM ' + self.tableName + ' where postDate between "' + startDate + '" and "' + endDate + '"')
-        devices = self.dbPointer.fetchall()
-        return devices
+        # print(startDate)
+        # print(endDate)
+        self.dbPointer.execute('SELECT device FROM ' + self.tableName + ' where postDate between "' \
+                + startDate + '" and "' + endDate + '" ORDER BY postDate DESC')
+        devices = list(self.dbPointer.fetchall())
+        self.dbPointer.execute('SELECT postDate FROM ' + self.tableName + ' where postDate between "' \
+                + startDate + '" and "' + endDate + '" ORDER BY postDate DESC')
+        postDates = list(self.dbPointer.fetchall())
+
+        for index in range(len(postDates)):
+            if postDates[index][0] != endDate:
+                break;
+            del devices[0]
+
+        result = []
+        for device in devices:
+            result.append(device[0])
+
+        return result
 
