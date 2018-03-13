@@ -69,3 +69,21 @@ class SqliteWrapper:
                 print(result)
             else:
                 break
+    def getPostLink(self, startDate, endDate):
+        startDate = self.fmtDate(startDate + "-01")
+        endDate = self.fmtDate(endDate + "-01")
+        print(startDate)
+        print(endDate)
+        self.dbPointer.execute('SELECT postLink FROM ' + self.tableName + ' where postDate between "' + startDate + '" and "' + endDate + '"')
+        postLinks = self.dbPointer.fetchall()
+        return postLinks
+
+    def getDevice(self, startDate, endDate):
+        startDate = self.fmtDate(startDate + "-01")
+        endDate = self.fmtDate(endDate + "-01")
+        print(startDate)
+        print(endDate)
+        self.dbPointer.execute('SELECT device FROM ' + self.tableName + ' where postDate between "' + startDate + '" and "' + endDate + '"')
+        devices = self.dbPointer.fetchall()
+        return devices
+
