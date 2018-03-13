@@ -30,9 +30,11 @@ def main():
         if opt == '-h':
             usage()
         elif opt == '-p':
+            print("updating data...")
+            updateData(sqliteWrapper)
+
             print("analizing data...")
             getResult(sys.argv)
-            # period = arg
         elif opt == '-u':
             print("updating data...")
             updateData(sqliteWrapper)
