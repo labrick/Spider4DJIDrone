@@ -1,9 +1,11 @@
 #! /usr/bin/python3
 #-*- coding: utf8 -*-
 
-import common 
-import sys 
-import getopt 
+import common
+import sys
+import getopt
+
+from sqliteWrapper import SqliteWrapper
 
 def writeDevice2Json(djiDevice):
     deviceDict = {}
@@ -26,8 +28,8 @@ def getPopularity(argv):
 
         for index in range(len(link2DeviceList[0])):
             tmpPolularity[link2DeviceList[i][index]] += 1
-        djiDevicePopularity.append(tmpPolularity) 
-    return djiDevicePopularity 
+        djiDevicePopularity.append(tmpPolularity)
+    return djiDevicePopularity
 
 def checkInputVlidation(argv):
     if len(argv) > 3:
@@ -55,19 +57,23 @@ def parseParam(argv):
     for opt, arg in opts:
         if opt == '-h':
             print("spider4DJIDrone.py -p <period> month1 month2 month3")
-        elif opt == '-p'
-            period = arg 
-    
+        elif opt == '-p':
+            period = arg
+
     return period, argv[2:]
 
 def getLinkDevice(argv):
     period, months = parseParam(argv)
     num = len(months)
-    #Add code here
 
+    #Add code here
+    sqliteWrapper = SqliteWrapper("C222")
+    linkList = sqliteWrapper.getPostLink("2018-02", "2018-03")
+    link2DeviceList = sqliteWrapper.getDevice("2018-02", "2018-03")
     #end
+
     #link2DeviceList is a list of list
-    return linkList, link2DeviceList  
+    return linkList, link2DeviceList
 def getResult(argv):
     djiDevicePopularity = getPopularity(argv)
     num = len(djiDevicePopularity)
@@ -80,7 +86,7 @@ def getResult(argv):
         # Make sure the initial value is zero
         for key in deviceSeries:
             deviceSeries[key] = 0
-        # Classify the devices 
+        # Classify the devices
         for key in djiDevicePopularity[i]:
             if key == 'osmo mobile' or key == 'osmo mobile 2':
                 deviceSeries['Osmo Mobile'] += djiDevicePopularity[i][key]
