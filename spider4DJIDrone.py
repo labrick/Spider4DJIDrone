@@ -71,11 +71,11 @@ def main():
 
     # to analyse the requst data , need parameter 'period' and 'months'
     period = 2
-    months = ['201706', '201708']
+    months = ['201706', '201708','201710']
     checkDateValidation(period,months)
     nameList, valueList = getResult(period, months)
-    plotBar(nameList, valueList)
-    plotPie(nameList, valueList[0])
+    plotBar(nameList, valueList,months)
+    plotPie(nameList, valueList[0],months[0])
 
 if __name__ == '__main__':
     main()
