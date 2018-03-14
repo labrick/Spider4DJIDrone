@@ -38,14 +38,13 @@ def checkDateValidation(period, months):
             sys.exit()
 
 def main():
-
+    sqliteWrapper = SqliteWrapper("C222")
     try:
-        opts, args = getopt.getopt(sys.argv, "hpu",["period="])
+        opts, args = getopt.getopt(sys.argv[1:], "hp:u")
     except getopt.GetoptError:
-        print("spider4DJIDrone.py -p <period> month1 month2 month3")
+        usage()
         sys.exit(2)
 
-    sqliteWrapper = SqliteWrapper("C222")
     for opt, arg in opts:
         if opt == '-h':
             usage()
@@ -61,21 +60,14 @@ def main():
 
     print("updating data...")
     updateData(sqliteWrapper)
-    argv = []
-    #argv.append('')
-    argv.append('-p')
-    argv.append('2')
-    argv.append('201706')
-    argv.append('201707')
-    argv.append('201708')
 
     # to analyse the requst data , need parameter 'period' and 'months'
     period = 2
     months = ['201706', '201708','201710']
     checkDateValidation(period,months)
     nameList, valueList = getResult(period, months)
-    plotBar(nameList, valueList,months)
-    plotPie(nameList, valueList[0],months[0])
+    plotBar(nameList, valueList, months)
+    plotPie(nameList, valueList[0], months[0])
 
 if __name__ == '__main__':
     main()
