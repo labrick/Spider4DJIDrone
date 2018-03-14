@@ -2,6 +2,7 @@
 
 import sys
 import getopt
+import time
 
 from sqliteWrapper import SqliteWrapper
 from updateData import updateData
@@ -37,6 +38,13 @@ def checkDateValidation(period, months):
             print("Invalid Date Input: Please check the month")
             sys.exit()
 
+def subMonth(year, month, sub):
+    month = month - sub
+    if month <= 0:
+        month += 12
+        year -= 1
+    return year, month
+
 def main():
     sqliteWrapper = SqliteWrapper("C222")
     try:
@@ -49,22 +57,30 @@ def main():
         if opt == '-h':
             usage()
         elif opt == '-p':
+            period = int(arg)
+            months = args
             print("updating data...")
             updateData(sqliteWrapper)
 
             print("analizing data...")
-            getResult(sys.argv)
+            getResult(period, months)
+            sys.exit(0)
         elif opt == '-u':
             print("updating data...")
             updateData(sqliteWrapper)
 
     print("updating data...")
     updateData(sqliteWrapper)
-
-    # to analyse the requst data , need parameter 'period' and 'months'
+    # # to analyse the requst data , need parameter 'period' and 'months'
     period = 2
-    months = ['201706', '201708','201710']
-    checkDateValidation(period,months)
+    tstruct = time.localtime(time.time())
+    year = tstruct.tm_year
+    month = tstruct.tm_mon
+    year1, month1 = subMonth(year, month, 5)
+    year2, month2 = subMonth(year, month, 3)
+    year3, month3 = subMonth(year, month, 1)
+    months = [str(year1) + str(month1), str(year2) + str(month2), str(year3) + str(month3)]
+    # checkDateValidation(period, months)
     nameList, valueList = getResult(period, months)
     plotBar(nameList, valueList, months)
     plotPie(nameList, valueList[0], months[0])
