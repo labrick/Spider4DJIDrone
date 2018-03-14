@@ -4,14 +4,19 @@
  
 1. 编写一个爬虫，解析大疆社区中的作品展示，获得各产品流行度值，并通过图表直观给出各产品受欢迎程度
 2. 不要让用你代码的人想修改你的代码！！
+3. 尽量做到自动化，可扩展
  
 ## 解决方案
  
-1. 爬取[链接:https://bbs.dji.com/forum-60-1.html](https://bbs.dji.com/forum-60-1.html)，获取帖子信息：发帖日期，发帖人，发帖人所用设备，帖子标题，链接，帖子访问次数，回复次数，最后回复时间；并将这些写入sqlite数据库中；数据库中表格格式如下:
+1. 爬取[链接:https://bbs.dji.com/forum-60-1.html](https://bbs.dji.com/forum-60-1.html)，获取帖子信息：发帖日期，发帖人，发帖人所用设备，帖子标题，链接，帖子访问次数，回复次数，最后回复时间；统计DJI产品设备名写入JSON文件，如果链接存在，设备不存在，c采用模块三`anaEachPage`更进一步获取，最后把爬取的数据写入sqlite数据库中；数据库中主表格格式如下:
     ```
     postDate, postBy, device, postTitle, postLink UNIQUE, visitTimes, commentTimes, updateTime
     ```
-2. 统计DJI产品设备名写入JSON文件，并判断发帖人设备是否存在，如果存在，该设备流行度加一；如果不存在，保存该链接；
+2. 爬取给定的链接，检测整个页面是否出现JSON中提到的的设备名称（包括别称），如果存在，则返回设备名称
+    ```
+    deviceList = anaEachPage(url)
+    ```
+3. 给定特定区间，从数据库中读取对应数据，统计设备流行度；
     ```
     接口变量：
     djiDevicePopularity: DJI设备对应的流行度值
@@ -20,14 +25,7 @@
     ||
     至少要有前面数据的导入接口，后面获取新数据的接口
     ```
-3. 爬取步骤二中的链接，检测整个页面是否出现步骤一中的设备名称（包括别称），如果存在，该设备流行度加一，否则跳过该链接
-    ```
-    接口变量：
-    djiDevicePopularity: DJI设备对应的流行度值（包含不好判断的链接）
-    ||
-    至少要有前面数据的导入接口，后面获取新数据的接口
-    ```
-4. 将步骤2/3中统计的流行度值归一化并制成图表，发到电子邮箱中; 
+4. 将设备流行度值归一化并制成图表，发到电子邮箱中; 
 5. 形成文档
 
 ## 依赖关系
@@ -104,12 +102,12 @@ YINBIAO：步骤1
     > >     (1) 将win7中/windwos/fonts目录下SIMSUN.ttf（对应宋体字体）拷贝到ubuntu的
     > >         /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/fonts/ttf目录中
     > >     (2) 删除~/.cache/matplotlib的缓冲目录: rm -rf ~/.matplotlib/\*.cache
-    > >     (3) 第三修改修改配置文件：<br>
-    > >         1) /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/matplotlibrc,找到如下两项:<br>
-    > >         去掉注释 #，并在font.sans-serif冒号后加上 SIMSUN, 保存退出。<br>
+    > >     (3) 第三修改修改配置文件：
+    > >         1) /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/matplotlibrc,找到如下两项:
+    > >         去掉注释 #，并在font.sans-serif冒号后加上 SIMSUN, 保存退出。
     > >         font.family         : sans-serif  
-    > >         font.sans-serif     : SIMSUN, ...,sans-serif <br>
-    > >         2) 找到axes.unicode_minus，将True改git为False，解决'-'显示为方块问题<br>
+    > >         font.sans-serif     : SIMSUN, ...,sans-serif
+    > >         2) 找到axes.unicode_minus，将True改git为False，解决'-'显示为方块问题
     > 
     > A: 方法二
     > >     (1) 在Ubuntu终端中运行fc-list:zhang=CN,得到Ubuntu系统中的中文字库
@@ -119,3 +117,8 @@ YINBIAO：步骤1
 5. Q: 获取所有帖子信息到数据库时，为了避免重复分析帖子信息，需要判断已获取帖子与未处理过的帖子的分界线；
 
     > A: 获取帖子信息时按照发布时间进行排序，并按照日期的从过去到现在的顺序写入数据库，只需要检测数据库中有多少记录(页)，就可以找到已经更新的位置，从而接着进行更新写入数据库；该方法同时解决了异常导致程序停止，更新位置不可知问题；
+
+## TODO LIST
+
+1. 帖子里如果同时存在多个型号的设备名称，应该每个流行度都加一【目前只加了第一次出现的设备】
+2. 图形绘制应该增加一个随时间变化的设备数量折线图【目前只有特定区间的设备扇形图和固定区间的设备数量柱形图】
