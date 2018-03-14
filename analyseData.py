@@ -13,72 +13,70 @@ def writeDevice2Json(djiDevice):
         deviceDict[each] = []
     common.saveDeviceName(deviceDict)
 
-def getPopularity(argv):
-    linkList, link2DeviceList = getLinkDevice(argv)
-    num = len(link2DeviceList)
+def getPopularity(period, months):
+    linkList, link2DeviceList = getLinkDevice(period, months)
     djiDevicePopularity = []
-    for i in rang(num):
+    num = len(link2DeviceList)
+    combineDevices = set()
+    for i in range(num):
+        combineDevices |= set(link2DeviceList[i])
+    djiDevice = list(combineDevices)
+    djiDevice.remove("")
+    writeDevice2Json(djiDevice)
+    for i in range(num):
         tmpPolularity = {}
-        djiDevice = list(set(link2DeviceList[i]))
-        djiDevice.remove("")
-        writeDevice2Json(djiDevice)
 
         for element in djiDevice:
             tmpPolularity[element] = 0;
 
         for index in range(len(link2DeviceList[0])):
-            tmpPolularity[link2DeviceList[i][index]] += 1
+            if link2DeviceList[i][index] != '':
+                tmpPolularity[link2DeviceList[i][index]] += 1
         djiDevicePopularity.append(tmpPolularity)
     return djiDevicePopularity
 
-def checkInputVlidation(argv):
-    if len(argv) > 3:
-        print("Too many months!!!")
-        sys.exit()
-    num = len(argv)
-    for i in range(num):
-        date = argv[i]
-        if len(date) != 6 or (date.isdigit() == False):
-            print("Invalid Arguments!!!")
-            sys.exit()
-        year,month =int(date[:4]), int(date[4:6]);
-        if year < 2010 or month <=0 or month >=13:
-            print("Invalid Arguments")
-            sys.exit()
+#convert 201801 to 2018-01
+def formatMonth(month):
+    tmpList = list(month)
+    tmpList.insert(4,'-')
+    monthFormated = "".join(tmpList)
+    return monthFormated 
 
-def parseParam(argv):
-    checkInputVlidation(argv)
-    period = ''
-    try:
-        opts, args = getopt.getopt(argv, "hp",["period="])
-    except getopt.GetoptError:
-        print("spider4DJIDrone.py -p <period> month1 month2 month3")
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print("spider4DJIDrone.py -p <period> month1 month2 month3")
-        elif opt == '-p':
-            period = arg
+#get start and end month to fetch data form database
+def getStartEndMonth(start,period):
+    startYearInt = int(start[:4])
+    startMonthInt = int(start[4:6])
+    endYearInt = startYearInt 
+    endMonthInt = startMonthInt + period 
+    if endMonthInt > 12:
+        endYearInt += endMonthInt // 12
+        endMonthInt = endMonthInt % 12
+    end = str(endYearInt) + str(endMonthInt)
+    startMonth = formatMonth(start)
+    endMonth = formatMonth(end)
+    return startMonth, endMonth 
 
-    return period, argv[2:]
-
-def getLinkDevice(argv):
-    period, months = parseParam(argv)
-    num = len(months)
-
-    #Add code here
+def getLinkDevice(period, months):
+   # checkDateValidation(months)
+    linkList = []
+    link2DeviceList = []
     sqliteWrapper = SqliteWrapper("C222")
-    linkList = sqliteWrapper.getPostLink("2018-02", "2018-03")
-    link2DeviceList = sqliteWrapper.getDevice("2018-02", "2018-03")
-    #end
-
-    #link2DeviceList is a list of list
+    for i in range(len(months)):
+        startMonth, endMonth = getStartEndMonth(months[i],period)
+        tmpLinkList = sqliteWrapper.getPostLink(startMonth, endMonth)
+        if len(tmpLinkList) == 0:
+            print("Can't get the data you require from the database")
+            sys.exit()
+        linkList.append(tmpLinkList)
+        tmpLink2DeviceList = sqliteWrapper.getDevice(startMonth, endMonth)
+        link2DeviceList.append(tmpLink2DeviceList)
     return linkList, link2DeviceList
-def getResult(argv):
-    djiDevicePopularity = getPopularity(argv)
+
+def getResult(period,months):
+    djiDevicePopularity = getPopularity(period, months)
     num = len(djiDevicePopularity)
     valueListPlot = []
-    for i in rang(num):
+    for i in range(num):
         # init values
         nameList = []
         valueList = []
@@ -108,15 +106,16 @@ def getResult(argv):
                 deviceSeries['Other'] += djiDevicePopularity[i][key];
         deviceSerieSorted = sorted(deviceSeries.items(), key = lambda deviceSeries:deviceSeries[0]);
         for index in deviceSerieSorted:
-            if index[1] == 0:
-                continue
+            #if index[1] == 0:
+            #    continue
             nameList.append(index[0]);
             valueList.append(index[1])
         valueListPlot.append(valueList)
     return nameList, valueListPlot
 
 def main(argv):
-    getResult(argv)
+    name, value = getResult(argv)
+    print(len(name))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
