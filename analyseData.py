@@ -29,7 +29,7 @@ def getPopularity(period, months):
         for element in djiDevice:
             tmpPolularity[element] = 0;
 
-        for index in range(len(link2DeviceList[0])):
+        for index in range(len(link2DeviceList[i])):
             if link2DeviceList[i][index] != '':
                 tmpPolularity[link2DeviceList[i][index]] += 1
         djiDevicePopularity.append(tmpPolularity)
