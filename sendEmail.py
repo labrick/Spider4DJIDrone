@@ -49,5 +49,5 @@ def sendEmail():
 
 def main():
     sendEmail()
-if __name__ = "__main__":
+if __name__ == "__main__":
     main()
