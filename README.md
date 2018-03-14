@@ -84,36 +84,41 @@ YINBIAO：步骤1
 2. 对HTML页面的解析
 3. 爬虫库（urllib, beautifulsoup）的使用
 4. 基本绘图库（matplotlib）的使用
+5. 设计哲学：
+    1. 机制与策略分离
+    2. 区间不对称原则
 
 ## 开发过程中遇到的问题与解决方法
 
 1. Q: 为了实现完全自动化，需要自动添加新的设备到程序当中。
 
-    A: 分析所有用户认证设备获得所有DJI设备列表。
+    > A: 分析所有用户认证设备获得所有DJI设备列表。
 
 2. Q: 分析帖子统计所用设备时，个人对设备的称呼都不尽相同，为寻找所用设备增添了难度。
 
-    A: 将程序自动获取的DJI设备列表保存为json文件，并在json文件中手动添加每个设备的别称，同时保证再次执行程序时不会删除掉之前添加的设备别称。
-
+    > A: 将程序自动获取的DJI设备列表保存为json文件，并在json文件中手动添加每个设备的别称，同时保证再次执行程序时不会删除掉之前添加的设备别称。
+    
 3. Q: 理论上应该是个人写一个模块，然后用最底层一个python文件将各个模块粘合在一起，这样每个模块才更具有独立性，需要改改改！！！
 
-4. Q: 绘制流行度图表时，无人机型号为中文时乱码无法显示。（图表改为横向显示，添加横纵坐标说明及图题）<br>（参考：http://blog.csdn.net/dgatiger/article/details/50414549 ）
+4. Q: 绘制流行度图表时，无人机型号为中文时乱码无法显示。（图表改为横向显示，添加横纵坐标说明及图题）<br>
+（参考：http://blog.csdn.net/dgatiger/article/details/50414549 ）
 
-
-    A:方法一： (1) 将win7中/windwos/fonts目录下SIMSUN.ttf（对应宋体字体）拷贝到ubuntu /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/fonts/ttf目录中
-	
-    (2) 删除~/.cache/matplotlib的缓冲目录: rm -rf ~/.matplotlib/\*.cache
-	
-    (3) 第三修改修改配置文件：<br>
-	    1) /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/matplotlibrc,找到如下两项:<br>
-         去掉注释 #，并在font.sans-serif冒号后加上 SIMSUN, 保存退出。<br>
-         font.family         : sans-serif  
-         font.sans-serif     : SIMSUN, ...,sans-serif <br>
-        2) 找到axes.unicode_minus，将True改git为False，解决'-'显示为方块问题<br>
-    方法二：(1) 在Ubuntu终端中运行fc-list:zhang=CN,得到Ubuntu系统中的中文字库
-
-    (2)使用matplotlib中的font_manager.FrontProperties(fname='/path/to/fonts')来设置每一处的中文字体显示(参考：blog.csdn.net/onepiece_dn/article/details/46239581)
+    > A: 方法一 
+    > >     (1) 将win7中/windwos/fonts目录下SIMSUN.ttf（对应宋体字体）拷贝到ubuntu的
+    > >         /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/fonts/ttf目录中
+    > >     (2) 删除~/.cache/matplotlib的缓冲目录: rm -rf ~/.matplotlib/\*.cache
+    > >     (3) 第三修改修改配置文件：<br>
+    > >         1) /usr/local/lib/python3.5/dist-packages/matplotlib/mpl-data/matplotlibrc,找到如下两项:<br>
+    > >         去掉注释 #，并在font.sans-serif冒号后加上 SIMSUN, 保存退出。<br>
+    > >         font.family         : sans-serif  
+    > >         font.sans-serif     : SIMSUN, ...,sans-serif <br>
+    > >         2) 找到axes.unicode_minus，将True改git为False，解决'-'显示为方块问题<br>
+    > 
+    > A: 方法二
+    > >     (1) 在Ubuntu终端中运行fc-list:zhang=CN,得到Ubuntu系统中的中文字库
+    > >     (2) 使用matplotlib中的font_manager.FrontProperties(fname='/path/to/fonts')来设置每一处的中文字体显示
+    > >         (参考：blog.csdn.net/onepiece_dn/article/details/46239581)
 
 5. Q: 获取所有帖子信息到数据库时，为了避免重复分析帖子信息，需要判断已获取帖子与未处理过的帖子的分界线；
 
-    A: 最后评论时间新于数据中最新时间的帖子为本次需要分析的帖子；在需要分析的帖子里，有些是已经更新在数据库中的，这些需要在数据库中找到，更新最后评论时间；其他的直接写入数据库
+    > A: 获取帖子信息时按照发布时间进行排序，并按照日期的从过去到现在的顺序写入数据库，只需要检测数据库中有多少记录(页)，就可以找到已经更新的位置，从而接着进行更新写入数据库；该方法同时解决了异常导致程序停止，更新位置不可知问题；
