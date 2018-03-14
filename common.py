@@ -33,6 +33,39 @@ def saveDeviceName(deviceDict):
     filep.write(js)
     filep.close()
 
+def getJsonContent(filename):
+    try:
+        filep = open(filename)
+    except:
+        print("can't find deviceSeries.json")
+        return None
+
+    theText = filep.read()
+    content = json.loads(theText)
+    return content 
+
+def updateJsonContent(inputDict, filename):
+    originDict = getJsonContent(filename)
+    for item in inputDict:
+        if item in originDict:
+            list1 = originDict[item]
+            list2 = inputDict[item]
+            sumlist = list(set(list1) | set(list2))
+            originDict[item] = sumlist
+        else:
+            print("new item " + item)
+            originDict[item] = inputDict[item]
+    filep = open(filename, 'w')
+    js = json.dumps(originDict, ensure_ascii=False, indent = 4)
+    filep.write(js)
+    filep.close()
+
+def createJson(inputDict, filename):
+    filep = open(filename, 'w')
+    js = json.dumps(inputDict, ensure_ascii=False, indent = 4)
+    filep.write(js)
+    filep.close()
+
 def main():
     deviceDict = {
             "spark": ["晓", "晓spark"],
@@ -40,7 +73,19 @@ def main():
             "mavic air": [],
             "精灵": [],
             }
-    saveDeviceName(deviceDict)
+    newDict = {
+            "Osmo Mobile":['osmo mobile','osmo mobile 2'],
+            "Osmo":['osmo','osmo＋','osmo pro', 'osmo raw'],
+            "Spark":['晓spark'],
+            "Mavic Pro":['mavic pro', 'mavic pro 铂金版'],
+            "Mavic Air":['mavic air'],
+            "Phantom 4/4pro":['精灵4a','精灵4 pro','精灵4'],
+            "Phantom 3/3se":['精灵3','精灵3 se'],
+            "Inspire":['悟1','悟2','悟raw','悟pro'],
+            "Other":['goggles','如影m','如影mx']
+            }
+    updateJsonContent(newDict, "deviceDict.json")
+    #createJson(newDict, "deviceDict.json")
 
 if __name__ == '__main__':
     main()
