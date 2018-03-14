@@ -75,11 +75,11 @@ def getLinkDevice(period, months):
 def getResult(period,months):
     djiDevicePopularity = getPopularity(period, months)
     num = len(djiDevicePopularity)
-    valueListPlot = []
+    valueList = []
     for i in range(num):
         # init values
         nameList = []
-        valueList = []
+        tmpValueList = []
         deviceSeries = {'Osmo':0, 'Osmo Mobile':0, 'Spark':0, 'Mavic Pro':0, 'Mavic Air':0, 'Phantom 4/4Pro':0, 'Phantom 3/3SE':0, 'Inspire':0, 'Other':0}
         # Make sure the initial value is zero
         for key in deviceSeries:
@@ -109,9 +109,9 @@ def getResult(period,months):
             #if index[1] == 0:
             #    continue
             nameList.append(index[0]);
-            valueList.append(index[1])
-        valueListPlot.append(valueList)
-    return nameList, valueListPlot
+            tmpValueList.append(index[1])
+        valueList.append(tmpValueList)
+    return nameList, valueList 
 
 def main(argv):
     name, value = getResult(argv)
