@@ -58,9 +58,14 @@ def getStartEndMonth(start,period):
 def getLinkDevice(period, months):
     linkList = []
     link2DeviceList = []
-    sqliteWrapper = SqliteWrapper("C222")
+    for i in range(len(months)):
+        if len(months[i]) == 5:
+            str_list=list(months[i])
+            str_list.insert(4,'0')
+            months[i] = "".join(str_list)
     months.sort()
     months.reverse()
+    sqliteWrapper = SqliteWrapper("C222")
     for i in range(len(months)):
         startMonth, endMonth = getStartEndMonth(months[i],period)
         tmpLinkList = sqliteWrapper.getPostLink(startMonth, endMonth)

@@ -25,7 +25,12 @@ def plotPie(nameList, valueList,month):
     plt.title('DJI产品流行度分析\n数据来源:https://bbs.dji.com/forum-60-1.html\n统计时间: '+month,fontproperties=zhfont)
     plt.savefig("pie.png")
 
-def plotBar(nameList, valueList, months):
+def plotBar(nameList, valueList,period, months):
+    for i in range(len(months)):
+        if len(months[i]) == 5:
+            str_list=list(months[i])
+            str_list.insert(4,'0')
+            months[i] = "".join(str_list)
     months.sort()
     months.reverse()
     barNum = len(valueList)
@@ -36,13 +41,14 @@ def plotBar(nameList, valueList, months):
     # two bars for each device
     index = index * (barNum + 0.5)
     colors = ['r','b','g','y']
-    for i in range(barNum):
+    a = range(barNum)
+    for i in reversed(a):
         rect = plt.barh(index+i, valueList[i], color=colors[i%4],label = months[i]);
         addLabels(rect)
     plt.yticks(index+(barNum-1)/2, nameList,fontproperties=zhfont)
     plt.xlabel('帖子数量', fontproperties=zhfont, position =(0.95,0))
     #plt.ylabel('DJI产品型号',fontproperties=zhfont)
-    plt.title(u'DJI产品流行度分析\n数据来源:https://bbs.dji.com/forum-60-1.html',fontproperties=zhfont)
+    plt.title('DJI产品流行度分析(周期：'+ str(period) +'个月)\n数据来源:https://bbs.dji.com/forum-60-1.html',fontproperties=zhfont)
     plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.05),ncol=3,fancybox=True)
     plt.savefig("bar.png")
 
