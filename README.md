@@ -39,9 +39,6 @@
  
 ## 运行方法
 
-    drawPic.py 画饼状图或者柱状图，需传入nameList和valueList变量
-    sendEmial.py 发送电子邮件，需添加电子邮件的信息，并在当前目录下存有相应的图片
-    analyseData.py 从数据库中获取命令行参数所决定的数据，向外提供nameList和valueListPlot变量
 
 ## 运行结果
 
