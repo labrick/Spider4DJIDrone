@@ -26,6 +26,8 @@ def plotPie(nameList, valueList,month):
     plt.savefig("pie.png")
 
 def plotBar(nameList, valueList, months):
+    months.sort()
+    months.reverse()
     barNum = len(valueList)
     if barNum == 0:
         print('Error: There is no data !!!!!!!!')

@@ -61,6 +61,8 @@ def getLinkDevice(period, months):
     linkList = []
     link2DeviceList = []
     sqliteWrapper = SqliteWrapper("C222")
+    months.sort()
+    months.reverse()
     for i in range(len(months)):
         startMonth, endMonth = getStartEndMonth(months[i],period)
         tmpLinkList = sqliteWrapper.getPostLink(startMonth, endMonth)
