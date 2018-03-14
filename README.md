@@ -38,19 +38,16 @@
  
 ## 运行方法
 
+    ./spider4DJIDrone.py
 
 ## 运行结果
 
-分析2页，解决中文乱码问题后运行<br>
-![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_2page_CN.png)<br>
 分析10页，图表改为横向显示，同时添加坐标信息及图题<br>
 ![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_10page_CN.png)<br>
 合并同系列，分析4页，相应的柱状图
 ![bar4](https://github.com/labrick/Spider4DJIDrone/blob/master/image/bar_4page_CN.png)<br>
 合并同系列，分析4页，相应的饼状图
 ![bar4](https://github.com/labrick/Spider4DJIDrone/blob/master/image/pie_4page_CN.png)<br>
-
-
 
 ## 分工
  
@@ -123,3 +120,4 @@ YINBIAO：步骤1
 
 1. 帖子里如果同时存在多个型号的设备名称，应该每个流行度都加一【目前只加了第一次出现的设备】
 2. 图形绘制应该增加一个随时间变化的设备数量折线图【目前只有特定区间的设备扇形图和固定区间的设备数量柱形图】
+3. 本项目基于一个前提：社区中的每个人拥有一个注册设备，而且不会变更；这显然是不现实的，需要改进
