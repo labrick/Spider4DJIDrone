@@ -63,7 +63,9 @@ def main():
             updateData(sqliteWrapper)
 
             print("analizing data...")
-            getResult(period, months)
+            nameList, valueList = getResult(period, months)
+            plotBar(nameList, valueList, period, months)
+            plotPie(nameList, valueList[0], months[0])
             sys.exit(0)
         elif opt == '-u':
             print("updating data...")
@@ -76,13 +78,14 @@ def main():
     tstruct = time.localtime(time.time())
     year = tstruct.tm_year
     month = tstruct.tm_mon
-    year1, month1 = subMonth(year, month, 5)
-    year2, month2 = subMonth(year, month, 3)
-    year3, month3 = subMonth(year, month, 1)
+    year1, month1 = subMonth(year, month, 6)
+    year2, month2 = subMonth(year, month, 4)
+    year3, month3 = subMonth(year, month, 2)
     months = [str(year1) + str(month1), str(year2) + str(month2), str(year3) + str(month3)]
+    print(months)
     # checkDateValidation(period, months)
     nameList, valueList = getResult(period, months)
-    plotBar(nameList, valueList, months)
+    plotBar(nameList, valueList, period, months)
     plotPie(nameList, valueList[0], months[0])
 
 if __name__ == '__main__':
