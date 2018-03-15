@@ -70,6 +70,7 @@ def main():
     for opt, arg in opts:
         if opt == '-h':
             usage()
+            sys.exit(0)
         elif opt == '-p':
             period = int(arg)
             months = args
@@ -78,12 +79,10 @@ def main():
             updateData(sqliteWrapper)
             sys.exit(0)
 
-    print("updating data...")
     updateData(sqliteWrapper)
     print("update data ok!")
     # # to analyse the requst data , need parameter 'period' and 'months'
     # checkDateValidation(period, months)
-    print("analyzing data...")
     nameList, valueList = getResult(period, months)
     print("analyze data ok!")
     plotBar(nameList, valueList, period, months)
