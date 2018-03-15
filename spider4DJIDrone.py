@@ -14,7 +14,7 @@ def usage():
 Options and arguments (and corresponding environment variables):
     -h display this help document
     -p the time period of data analyzed
-    -u update data only[default]'''
+    -u update data only'''
     print(str)
 
 def checkDateValidation(period, months):
