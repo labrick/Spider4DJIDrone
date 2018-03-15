@@ -45,35 +45,7 @@ def subMonth(year, month, sub):
         year -= 1
     return year, month
 
-def main():
-    sqliteWrapper = SqliteWrapper("C222")
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "hp:u")
-    except getopt.GetoptError:
-        usage()
-        sys.exit(2)
-
-    for opt, arg in opts:
-        if opt == '-h':
-            usage()
-        elif opt == '-p':
-            period = int(arg)
-            months = args
-            print("updating data...")
-            updateData(sqliteWrapper)
-
-            print("analizing data...")
-            nameList, valueList = getResult(period, months)
-            plotBar(nameList, valueList, period, months)
-            plotPie(nameList, valueList[0], months[0])
-            sys.exit(0)
-        elif opt == '-u':
-            print("updating data...")
-            updateData(sqliteWrapper)
-
-    print("updating data...")
-    updateData(sqliteWrapper)
-    # # to analyse the requst data , need parameter 'period' and 'months'
+def getDefaultParam():
     period = 2
     tstruct = time.localtime(time.time())
     year = tstruct.tm_year
@@ -82,11 +54,41 @@ def main():
     year2, month2 = subMonth(year, month, 4)
     year3, month3 = subMonth(year, month, 2)
     months = [str(year1) + str(month1), str(year2) + str(month2), str(year3) + str(month3)]
-    print(months)
+    # print(months)
+    return period, months
+
+
+def main():
+    sqliteWrapper = SqliteWrapper("C222")
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "hp:u")
+    except getopt.GetoptError:
+        usage()
+        sys.exit(2)
+
+    period, months = getDefaultParam()
+    for opt, arg in opts:
+        if opt == '-h':
+            usage()
+        elif opt == '-p':
+            period = int(arg)
+            months = args
+        elif opt == '-u':
+            print("updating data...")
+            updateData(sqliteWrapper)
+            sys.exit(0)
+
+    print("updating data...")
+    updateData(sqliteWrapper)
+    print("update data ok!")
+    # # to analyse the requst data , need parameter 'period' and 'months'
     # checkDateValidation(period, months)
+    print("analyzing data...")
     nameList, valueList = getResult(period, months)
+    print("analyze data ok!")
     plotBar(nameList, valueList, period, months)
     plotPie(nameList, valueList[0], months[0])
+    print("plot bar and pie ok!")
 
 if __name__ == '__main__':
     main()
