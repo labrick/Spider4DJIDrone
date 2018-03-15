@@ -127,7 +127,7 @@ def updateData(sqliteWrapper):
     while pageNum > 0:
         pageUrl = BASE_URL + 'forum.php?mod=forumdisplay&fid=60&orderby=dateline&orderby=dateline&filter=typeid&page=' + str(pageNum)
         # pageUrl = BASE_URL + 'forum-60-' + str(pageNum) + '.html'
-        sys.stdout.write("\ranalyse page:" + str(pageNum) + "/" + str(maxPageNum))
+        sys.stdout.write("\rupdating page:" + str(pageNum) + "/" + str(maxPageNum))
         html = getHtml(pageUrl)
 
         postDate, postBy, device, postTitle, postLink, \
