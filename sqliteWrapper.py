@@ -112,7 +112,7 @@ class SqliteWrapper:
             result.extend(self.getNoAirItem("device", startDate, airOnSaleTime))
             result.extend(self.getItem("device", airOnSaleTime, endDate))
         elif (endDate < airOnSaleTime):
-            result.extend(self.getNoAirItem("device", startDate, airOnSaleTime))
+            result.extend(self.getNoAirItem("device", startDate, endDate))
         else:
             result.extend(self.getItem("device", startDate, endDate))
 
