@@ -38,24 +38,21 @@
  
 ## 运行方法
 
-    ./spider4DJIDrone.py
+    ./spider4DJIDrone.py [-p period startMonth ...]
 
 ## 运行结果
 
-分析10页，图表改为横向显示，同时添加坐标信息及图题<br>
-![five](https://github.com/labrick/Spider4DJIDrone/blob/master/image/result_10page_CN.png)<br>
-合并同系列，分析4页，相应的柱状图
-![bar4](https://github.com/labrick/Spider4DJIDrone/blob/master/image/bar_4page_CN.png)<br>
-合并同系列，分析4页，相应的饼状图
-![bar4](https://github.com/labrick/Spider4DJIDrone/blob/master/image/pie_4page_CN.png)<br>
+分析10页，图表改为横向显示，同时添加坐标信息及图题
 
-## 分工
- 
-YANAN: 步骤3 
- 
-FUAN：步骤2/4 
- 
-YINBIAO：步骤1 
+![five](/image/result_10page_CN.png)
+
+合并同系列，分析4页，相应的柱状图
+
+![bar4](/image/bar_4page_CN.png)
+
+合并同系列，分析4页，相应的饼状图
+
+![bar4](/image/pie_4page_CN.png)
 
 ## 合作说明
  
