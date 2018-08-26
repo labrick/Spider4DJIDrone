@@ -20,7 +20,7 @@ def sendEmail():
     mail_host = 'smtp.163.com'
     mail_user = 'wangfuan361'
     mail_pass = 'job4netease'
-    me = 'xxxxxx<xxxx@xxxx>'
+    me = 'wangfuan361<wangfuan361@163.com>'
 
     msg = MIMEMultipart()
     msg['Subject'] = 'Result'
@@ -30,11 +30,15 @@ def sendEmail():
     body = """
     <h1>The Popularity of DJI Devices</h1>
     <img src="cid:image1"/>
+    <img src="cid:image2"/>
     """
     msg.attach(MIMEText(body, 'html', 'utf-8'))
     with open('bar.png', 'rb') as f:
         msgImage = MIMEImage(f.read())
     msgImage.add_header('Content-ID','<image1>')
+    with open('pie.png', 'rb') as f:
+        msgImage = MIMEImage(f.read())
+    msgImage.add_header('Content-ID','<image2>')
     msg.attach(msgImage)
 
     try:
