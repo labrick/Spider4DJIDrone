@@ -4,7 +4,7 @@
 '''
  > File Name: sendEmail.py
  > Author:
- > Email: 
+ > Email:
  > Created Time: Mon 12 Mar 2018 08:13:31 PM CST
 '''
 import smtplib
@@ -16,10 +16,10 @@ from email.utils import parseaddr, formataddr
 
 def sendEmail():
     # Basic Imformation
-    mailto_list = ['xxxxx@xx.com']
+    mailto_list = ['1349501292@qq.com']
     mail_host = 'smtp.163.com'
-    mail_user = 'xxxxxxx'
-    mail_pass = 'xxxx'
+    mail_user = 'wangfuan361'
+    mail_pass = 'job4netease'
     me = 'xxxxxx<xxxx@xxxx>'
 
     msg = MIMEMultipart()
@@ -32,7 +32,7 @@ def sendEmail():
     <img src="cid:image1"/>
     """
     msg.attach(MIMEText(body, 'html', 'utf-8'))
-    with open('result.png', 'rb') as f:
+    with open('bar.png', 'rb') as f:
         msgImage = MIMEImage(f.read())
     msgImage.add_header('Content-ID','<image1>')
     msg.attach(msgImage)
