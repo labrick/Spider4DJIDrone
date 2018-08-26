@@ -39,21 +39,21 @@ def formatMonth(month):
     tmpList = list(month)
     tmpList.insert(4,'-')
     monthFormated = "".join(tmpList)
-    return monthFormated 
+    return monthFormated
 
 #get start and end month to fetch data form database
 def getStartEndMonth(start,period):
     startYearInt = int(start[:4])
     startMonthInt = int(start[4:6])
-    endYearInt = startYearInt 
-    endMonthInt = startMonthInt + period 
+    endYearInt = startYearInt
+    endMonthInt = startMonthInt + period
     if endMonthInt > 12:
         endYearInt += endMonthInt // 12
         endMonthInt = endMonthInt % 12
     end = str(endYearInt) + str(endMonthInt)
     startMonth = formatMonth(start)
     endMonth = formatMonth(end)
-    return startMonth, endMonth 
+    return startMonth, endMonth
 
 def getLinkDevice(period, months):
     linkList = []
@@ -116,12 +116,12 @@ def getLinkDevice(period, months):
 #            nameList.append(index[0])
 #            tmpValueList.append(index[1])
 #        valueList.append(tmpValueList)
-#    return nameList, valueList 
+#    return nameList, valueList
 
 def getResult(period,months):
     djiDevicePopularity = getPopularity(period, months)
     num = len(djiDevicePopularity)
-    valueList = [] 
+    valueList = []
     nameList = []
     deviceSeries = {}
     deviceDict = common.getJsonContent("deviceDict.json")
@@ -137,23 +137,28 @@ def getResult(period,months):
             deviceSeries[key] = 0
         # Classify the devices
         for key in djiDevicePopularity[i]:
+            findClass = 0
             for seriesName,seriesList in deviceDict.items():
-                if isInside(seriesList,key) == True:
+                if key == seriesName or isInside(seriesList,key):
+                    findClass = 1
                     deviceSeries[seriesName] += djiDevicePopularity[i][key]
-                    break 
+                    break
+            if findClass == 0:
+                print("ERROR!!!! have not find " + key + " in deviceDict.json")
+                return
         deviceSerieSorted = sorted(deviceSeries.items(), key = lambda deviceSeries:deviceSeries[0]);
         for index in deviceSerieSorted:
             tmpValueList.append(index[1])
         valueList.append(tmpValueList)
-    return nameList, valueList 
+    return nameList, valueList
 
 def isInside(theList, theItem):
-    ret = False 
+    ret = False
     for i in theList:
         if i == theItem:
-            ret = True 
-            break 
-    return ret 
+            ret = True
+            break
+    return ret
 
 def main(argv):
     period = 2
