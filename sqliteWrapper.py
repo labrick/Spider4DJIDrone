@@ -23,11 +23,18 @@ class SqliteWrapper:
         self.dbPointer.execute(sql)
 
     def fmtDate(self, dateStr):
+        if(len(str(dateStr.split()[0]).split('-')) < 3):
+            dateStr = str(time.localtime(time.time()).tm_year) + "-" + dateStr.split()[0]
+        else:
+            dateStr = dateStr.split()[0]
         t = time.strptime(dateStr, "%Y-%m-%d")
         return time.strftime("%Y-%m-%d", t)
 
-
     def fmtDateTime(self, dateStr):
+        if(len(str(dateStr.split()[0]).split('-')) < 3):
+            dateStr = str(time.localtime(time.time()).tm_year) + "-" + dateStr
+        else:
+            dateStr = dateStr
         t = time.strptime(dateStr, "%Y-%m-%d %H:%M")
         return time.strftime("%Y-%m-%d %H:%M", t)
 
