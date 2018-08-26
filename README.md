@@ -35,6 +35,8 @@
     sudo pip3 install matplotlib
     sudo apt-get install python3-tk
     sudo pip3 install beautifulsoup4
+    sudo pip3 install numpy --upgrade
+    sudo apt-get install libatlas-base-dev
  
 ## 运行方法
 
