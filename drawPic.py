@@ -6,7 +6,12 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
-zhfont = mpl.font_manager.FontProperties(fname='/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc')
+
+# for raspi
+# zhfont = mpl.font_manager.FontProperties(fname='/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc')
+# for ubuntu
+zhfont = mpl.font_manager.FontProperties(fname='/usr/share/fonts/truetype/arphic/uming.ttc')
+
 
 def addLabels(rects):
     for rect in rects:
