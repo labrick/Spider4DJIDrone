@@ -79,7 +79,7 @@ def main():
             updateData(sqliteWrapper)
             sys.exit(0)
 
-    updateData(sqliteWrapper)
+    # updateData(sqliteWrapper)
     print("update data ok!")
     # # to analyse the requst data , need parameter 'period' and 'months'
     # checkDateValidation(period, months)
@@ -87,7 +87,9 @@ def main():
     print("analyze data ok!")
     plotBar(nameList, valueList, period, months)
     plotPie(nameList, valueList[0], months[0])
-    print("plot bar and pie ok!")
+    nameList, monthList, valueMatrix = getLineData(period, months)
+    plotLine(nameList, monthList, valueMatrix)
+    print("plot bar, pie and line ok!")
 
 if __name__ == '__main__':
     main()

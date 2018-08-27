@@ -4,6 +4,7 @@
 import common
 import sys
 import getopt
+import time
 from sqliteWrapper import SqliteWrapper
 
 def writeDevice2Json(djiDevice):
@@ -37,14 +38,24 @@ def getPopularity(period, months):
 #convert 201801 to 2018-01
 def formatMonth(month):
     tmpList = list(month)
+    if tmpList[4] == '-':
+        return month
     tmpList.insert(4,'-')
     monthFormated = "".join(tmpList)
+    t = time.strptime(monthFormated, "%Y-%m")
+    monthFormated = time.strftime("%Y-%m", t)
     return monthFormated
 
+# def formatMonth(month):
+#    t = time.strptime(month, "%Y-%m")
+#    return time.strftime("%Y-%m", t)
+
+
 #get start and end month to fetch data form database
-def getStartEndMonth(start,period):
+def getStartEndMonth(start, period):
+    start = formatMonth(start)
     startYearInt = int(start[:4])
-    startMonthInt = int(start[4:6])
+    startMonthInt = int(start[5:7])
     endYearInt = startYearInt
     endMonthInt = startMonthInt + period
     if endMonthInt > 12:
@@ -118,7 +129,35 @@ def getLinkDevice(period, months):
 #        valueList.append(tmpValueList)
 #    return nameList, valueList
 
-def getResult(period,months):
+def compareMonth(month1, month2):
+    return formatMonth(month1) >= formatMonth(month2)
+
+def getLineData(period, startMonth, endMonth):
+    period = period;
+    monthList = []
+    tmpStart = startMonth
+    tmpStart, tmpEnd = getStartEndMonth(tmpStart, period)
+    monthList.append(tmpStart)
+    while not compareMonth(tmpEnd, endMonth):
+        print(compareMonth(tmpEnd, endMonth))
+        print("tmpStart: " + tmpStart)
+        tmpStart = tmpEnd
+        monthList.append(tmpStart)
+        tmpStart, tmpEnd = getStartEndMonth(tmpStart, period)
+    print(monthList)
+    valueMatrix = []
+    nameList = []
+    # for month in monthList:
+    #     monthList.append(month)
+    #     nameList, valueList = getResult(period, );
+    #     valueMatrix.append(valueList)
+    nameList, valueMatrix = getResult(period, monthList)
+    for element in valueMatrix:
+        print(element)
+    print(nameList)
+    return nameList, monthList, valueMatrix
+
+def getResult(period, months):
     djiDevicePopularity = getPopularity(period, months)
     num = len(djiDevicePopularity)
     valueList = []
@@ -161,10 +200,12 @@ def isInside(theList, theItem):
     return ret
 
 def main(argv):
-    period = 2
-    months = ['201708','201710','201712']
-    name, value = getResult(period, months)
-    print(len(name))
+    # period = 2
+    # months = ['201708','201710','201712']
+    # name, value = getResult(period, months)
+    # print(len(name))
+
+    getLineData(1, "201801", "201803")
 
 if __name__ == "__main__":
     main(sys.argv[1:])

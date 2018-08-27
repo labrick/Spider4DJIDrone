@@ -19,7 +19,7 @@ def addLabels(rects):
         plt.text(width,rect.get_y() + rect.get_height()/ 2, width, ha = 'left', va ='center')
         rect.set_edgecolor('white')
 
-def plotPie(nameList, valueList,month):
+def plotPie(nameList, valueList, month):
     if(len(nameList) != len(valueList)):
         print('Error: the parameters must have same lenth!!!')
         return
@@ -30,7 +30,7 @@ def plotPie(nameList, valueList,month):
     plt.title('DJI产品流行度分析\n数据来源:https://bbs.dji.com/forum-60-1.html\n统计时间: '+month,fontproperties=zhfont)
     plt.savefig("pie.png")
 
-def plotBar(nameList, valueList,period, months):
+def plotBar(nameList, valueList, period, months):
     for i in range(len(months)):
         if len(months[i]) == 5:
             str_list=list(months[i])
@@ -56,6 +56,18 @@ def plotBar(nameList, valueList,period, months):
     plt.title('DJI产品流行度分析(周期：'+ str(period) +'个月)\n数据来源:https://bbs.dji.com/forum-60-1.html',fontproperties=zhfont)
     plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.05),ncol=3,fancybox=True)
     plt.savefig("bar.png")
+
+def plotLine(nameList, monthList, valueMatrix):
+    x = monthList
+    param = ()
+    for index in range(len(nameList)):
+        param.append(nameList)
+        param.append(valueMatrix[index])
+    # for name in nameList:
+    #     param.append(label=name)
+    # param.append(abel='First line')
+    plt.plot(param)
+
 
 def main():
     nameList = ['mavic', 'spark', 'inspire']
